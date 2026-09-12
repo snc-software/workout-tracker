@@ -7,13 +7,16 @@ import MuscleMap
 import SwiftUI
 
 /// Facade over the third-party MuscleMap SDK: renders front + back body views highlighting the
-/// given primary/secondary muscles, and — when `onMuscleGroupTapped` is set — resolves taps back
-/// to our own `Muscle` type. Callers never see `MuscleMap.Muscle` or `import MuscleMap`.
+/// given primary/secondary muscles, and — when `onMuscleTapped` is set — resolves taps back to
+/// our own `Muscle` type. Callers never see `MuscleMap.Muscle` or `import MuscleMap`.
+///
+/// `Muscle.name` is a `MuscleMap.Muscle` region rawValue, so the catalog matches the SDK's
+/// regions 1:1 and this is just an identity lookup, not a many-to-one mapping.
 struct MuscleMapPicker: View {
     let allMuscles: [Muscle]
     let primaryMuscles: [Muscle]
     let secondaryMuscles: [Muscle]
-    var onMuscleGroupTapped: (([Muscle]) -> Void)?
+    var onMuscleTapped: ((Muscle) -> Void)?
 
     var body: some View {
         HStack(spacing: 16) {
@@ -27,9 +30,11 @@ struct MuscleMapPicker: View {
             .highlight(primaryRegions, color: Color("primaryBrand"))
             .highlight(secondaryRegions, color: Color("accent"))
 
-        if let onMuscleGroupTapped {
+        if let onMuscleTapped {
             view = view.onMuscleSelected { region, _ in
-                onMuscleGroupTapped(Muscle.muscles(forRegion: region, in: allMuscles))
+                if let muscle = allMuscles.first(where: { $0.name == region.rawValue }) {
+                    onMuscleTapped(muscle)
+                }
             }
         }
 
@@ -37,10 +42,10 @@ struct MuscleMapPicker: View {
     }
 
     private var primaryRegions: [MuscleMap.Muscle] {
-        primaryMuscles.compactMap(\.muscleMapRegion)
+        primaryMuscles.compactMap { MuscleMap.Muscle(rawValue: $0.name) }
     }
 
     private var secondaryRegions: [MuscleMap.Muscle] {
-        secondaryMuscles.compactMap(\.muscleMapRegion)
+        secondaryMuscles.compactMap { MuscleMap.Muscle(rawValue: $0.name) }
     }
 }

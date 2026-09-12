@@ -9,8 +9,8 @@ import Testing
 
 @MainActor
 struct ExerciseEditorModelTests {
-    private let chest = Muscle(name: "Pectoralis major", displayName: "Chest", isFront: true)
-    private let triceps = Muscle(name: "Triceps brachii", displayName: "Triceps", isFront: false)
+    private let chest = Muscle(name: "chest", displayName: "Chest")
+    private let triceps = Muscle(name: "triceps", displayName: "Triceps")
 
     @Test(arguments: ["", "   ", "\n"])
     func canSaveIsFalseForEmptyOrWhitespaceOnlyName(name: String) {
@@ -94,8 +94,8 @@ struct ExerciseEditorModelTests {
         let inserted = try context.fetch(FetchDescriptor<Exercise>())
         #expect(inserted.count == 1)
         #expect(inserted.first?.name == "Barbell Bench Press")
-        #expect(inserted.first?.primaryMuscles.map(\.name) == ["Pectoralis major"])
-        #expect(inserted.first?.secondaryMuscles.map(\.name) == ["Triceps brachii"])
+        #expect(inserted.first?.primaryMuscles.map(\.name) == ["chest"])
+        #expect(inserted.first?.secondaryMuscles.map(\.name) == ["triceps"])
     }
 
     @Test func saveOnModelInitializedFromExistingExerciseUpdatesItInPlace() throws {
@@ -113,6 +113,6 @@ struct ExerciseEditorModelTests {
         let all = try context.fetch(FetchDescriptor<Exercise>())
         #expect(all.count == 1)
         #expect(all.first?.name == "Barbell Bench Press")
-        #expect(all.first?.primaryMuscles.map(\.name) == ["Pectoralis major"])
+        #expect(all.first?.primaryMuscles.map(\.name) == ["chest"])
     }
 }

@@ -11,8 +11,8 @@ final class Exercise {
     @Attribute(.unique) var id: UUID
     var name: String
     var category: ExerciseCategory?
-    var primaryMuscles: [Muscle]
-    var secondaryMuscles: [Muscle]
+    @Relationship(inverse: \Muscle.exercisesAsPrimary) var primaryMuscles: [Muscle]
+    @Relationship(inverse: \Muscle.exercisesAsSecondary) var secondaryMuscles: [Muscle]
 
     init(
         id: UUID = UUID(),

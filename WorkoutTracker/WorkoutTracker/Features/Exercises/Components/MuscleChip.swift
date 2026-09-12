@@ -61,7 +61,7 @@ struct MuscleChipAddButton: View {
     VStack(alignment: .leading, spacing: 12) {
         HStack {
             MuscleChip(
-                muscle: Muscle(name: "Pectoralis major", displayName: "Chest", isFront: true),
+                muscle: Muscle(name: "chest", displayName: "Chest"),
                 color: Color("primaryBrand"),
                 removeAccessibilityLabel: "Remove Chest from primary muscles",
                 onRemove: {}

@@ -40,7 +40,7 @@ struct ExerciseEditorView: View {
                         allMuscles: allMuscles,
                         primaryMuscles: Array(model.primaryMuscles),
                         secondaryMuscles: Array(model.secondaryMuscles),
-                        onMuscleGroupTapped: nil
+                        onMuscleTapped: nil
                     )
                     .frame(height: 220)
 

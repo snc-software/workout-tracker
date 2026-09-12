@@ -21,8 +21,8 @@ struct MuscleGroupPickerView: View {
                 allMuscles: allMuscles,
                 primaryMuscles: Array(model.primaryMuscles),
                 secondaryMuscles: Array(model.secondaryMuscles),
-                onMuscleGroupTapped: { muscles in
-                    muscles.forEach { model.toggle($0, in: group) }
+                onMuscleTapped: { muscle in
+                    model.toggle(muscle, in: group)
                 }
             )
             .padding()

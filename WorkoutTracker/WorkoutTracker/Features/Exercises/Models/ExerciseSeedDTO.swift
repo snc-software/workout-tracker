@@ -23,7 +23,6 @@ struct MuscleSeedDTO: Codable {
     let id: String
     let name: String
     let displayName: String
-    let isFront: Bool
 }
 
 struct ExerciseSeedDTO: Codable {
