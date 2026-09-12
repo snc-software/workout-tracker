@@ -8,6 +8,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 enum Typography {
     static let h1 = Font.custom("JetBrainsMono-SemiBold", size: 44, relativeTo: .largeTitle)
@@ -19,4 +20,21 @@ enum Typography {
     static let body = Font.custom("Manrope-Regular", size: 15, relativeTo: .callout)
     static let caption = Font.custom("Manrope-Regular", size: 13, relativeTo: .footnote)
     static let caption2 = Font.custom("Manrope-Regular", size: 11, relativeTo: .caption2)
+
+    /// `.navigationTitle` has no font modifier of its own, so the heading font is applied via
+    /// `UINavigationBarAppearance` once at launch rather than per-screen.
+    static func configureNavigationBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.largeTitleTextAttributes = [
+            .font: UIFont(name: "JetBrainsMono-SemiBold", size: 34) ?? .preferredFont(forTextStyle: .largeTitle)
+        ]
+        appearance.titleTextAttributes = [
+            .font: UIFont(name: "JetBrainsMono-SemiBold", size: 17) ?? .preferredFont(forTextStyle: .headline)
+        ]
+
+        let navigationBar = UINavigationBar.appearance()
+        navigationBar.standardAppearance = appearance
+        navigationBar.scrollEdgeAppearance = appearance
+        navigationBar.compactAppearance = appearance
+    }
 }

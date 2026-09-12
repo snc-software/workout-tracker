@@ -227,9 +227,7 @@
       "primaryMuscles": [
         "gastrocnemius"
       ],
-      "secondaryMuscles": [
-        "soleus"
-      ]
+      "secondaryMuscles": []
     },
     {
       "name": "Barbell Back Squat",

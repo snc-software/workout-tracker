@@ -30,8 +30,10 @@ struct MuscleGroupPickerView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("exercises.editor.picker.done") {
+                    Button {
                         dismiss()
+                    } label: {
+                        Text("exercises.editor.picker.done").font(Typography.body)
                     }
                 }
             }

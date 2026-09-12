@@ -26,14 +26,16 @@ struct ExerciseEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("exercises.editor.name.label") {
+                Section {
                     TextField("", text: $model.name)
                         .font(Typography.body)
                         .accessibilityLabel("exercises.editor.name.label")
                         .accessibilityIdentifier("exercises.editor.name.field")
+                } header: {
+                    sectionHeader("exercises.editor.name.label")
                 }
 
-                Section("exercises.editor.muscles.title") {
+                Section {
                     MuscleMapPicker(
                         allMuscles: allMuscles,
                         primaryMuscles: Array(model.primaryMuscles),
@@ -46,6 +48,8 @@ struct ExerciseEditorView: View {
                         legendItem(color: Color("primaryBrand"), titleKey: "exercises.editor.legend.primary")
                         legendItem(color: Color("accent"), titleKey: "exercises.editor.legend.secondary")
                     }
+                } header: {
+                    sectionHeader("exercises.editor.muscles.title")
                 }
 
                 muscleGroupSection(
@@ -77,8 +81,10 @@ struct ExerciseEditorView: View {
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("exercises.editor.save") {
+                    Button {
                         save()
+                    } label: {
+                        Text("exercises.editor.save").font(Typography.body)
                     }
                     .disabled(!model.canSave)
                     .accessibilityIdentifier("exercises.editor.save")
@@ -98,7 +104,7 @@ struct ExerciseEditorView: View {
         removeLabelKey: String,
         group: ExerciseEditorModel.MuscleSelectionGroup
     ) -> some View {
-        Section(titleKey) {
+        Section {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(muscles.sorted(by: { $0.displayName < $1.displayName })) { muscle in
@@ -120,7 +126,15 @@ struct ExerciseEditorView: View {
                 .padding(.vertical, 4)
             }
             .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
+        } header: {
+            sectionHeader(titleKey)
         }
+    }
+
+    private func sectionHeader(_ key: LocalizedStringKey) -> some View {
+        Text(key)
+            .font(Typography.caption)
+            .foregroundStyle(Color("textSecondary"))
     }
 
     private func legendItem(color: Color, titleKey: LocalizedStringKey) -> some View {
