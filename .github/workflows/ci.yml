@@ -49,19 +49,31 @@ jobs:
             -project WorkoutTracker/WorkoutTracker.xcodeproj \
             -scheme WorkoutTracker
 
-      # Device names/availability drift between runner images and Xcode
-      # versions, so pick whatever iPhone simulator is actually installed
-      # rather than hardcoding a model name that may not exist.
+      # The selected Xcode may not have the iOS Simulator platform runtime
+      # downloaded yet (some runner images only ship other platforms, e.g.
+      # visionOS, by default).
+      - name: Ensure iOS Simulator platform is installed
+        run: xcodebuild -downloadPlatform iOS
+
+      # Query xcodebuild directly for a destination it considers valid for
+      # this scheme, rather than picking a raw `simctl` device — a device
+      # can be "available" per simctl while still belonging to a runtime
+      # the active Xcode doesn't recognize for the scheme's platforms.
       - name: Determine simulator destination
         id: sim
         run: |
-          UDID=$(xcrun simctl list devices available \
-            | grep -E '^\s+iPhone' \
-            | grep -oE '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}' \
+          UDID=$(xcodebuild -showdestinations \
+              -project WorkoutTracker/WorkoutTracker.xcodeproj \
+              -scheme WorkoutTracker \
+            | grep 'platform:iOS Simulator' \
+            | grep -v 'placeholder' \
+            | sed -E 's/.*id:([0-9A-F-]+).*/\1/' \
             | head -1)
           if [ -z "$UDID" ]; then
-            echo "::error::No available iPhone simulator found on this runner."
-            xcrun simctl list devices
+            echo "::error::No buildable iOS Simulator destination found for this scheme."
+            xcodebuild -showdestinations \
+              -project WorkoutTracker/WorkoutTracker.xcodeproj \
+              -scheme WorkoutTracker
             exit 1
           fi
           echo "Using simulator $UDID"
