@@ -57,26 +57,58 @@ jobs:
 
       # The selected Xcode may not have the iOS Simulator platform runtime
       # downloaded yet (some runner images only ship other platforms, e.g.
-      # visionOS, by default).
+      # visionOS, by default). Cached across runs since this download is
+      # multiple GB and otherwise repeats on every job.
+      - name: Cache iOS Simulator runtime
+        uses: actions/cache@v4
+        with:
+          path: |
+            /Library/Developer/CoreSimulator/Images
+            /Library/Developer/CoreSimulator/Profiles/Runtimes
+          key: ios-simulator-runtime-${{ runner.os }}-xcode-${{ hashFiles('/Applications/Xcode*.app/Contents/version.plist') }}
+
       - name: Ensure iOS Simulator platform is installed
         run: xcodebuild -downloadPlatform iOS
 
-      # Query xcodebuild directly for a destination it considers valid for
-      # this scheme, rather than picking a raw `simctl` device — a device
-      # can be "available" per simctl while still belonging to a runtime
-      # the active Xcode doesn't recognize for the scheme's platforms.
+      # Downloading the platform only makes the runtime available; it does
+      # not create a simulator device using it. Reuse one if a prior step
+      # (or the cache) already left one, otherwise create one explicitly.
       - name: Determine simulator destination
         id: sim
         run: |
-          UDID=$(xcodebuild -showdestinations \
-              -project WorkoutTracker/WorkoutTracker.xcodeproj \
-              -scheme WorkoutTracker \
-            | grep 'platform:iOS Simulator' \
-            | grep -v 'placeholder' \
-            | sed -E 's/.*id:([0-9A-F-]+).*/\1/' \
-            | head -1)
+          find_destination() {
+            xcodebuild -showdestinations \
+                -project WorkoutTracker/WorkoutTracker.xcodeproj \
+                -scheme WorkoutTracker \
+              | grep 'platform:iOS Simulator' \
+              | grep -v 'placeholder' \
+              | sed -E 's/.*id:([0-9A-F-]+).*/\1/' \
+              | head -1
+          }
+
+          UDID=$(find_destination)
+
           if [ -z "$UDID" ]; then
-            echo "::error::No buildable iOS Simulator destination found for this scheme."
+            echo "No existing iOS Simulator destination; creating one."
+            RUNTIME_ID=$(xcrun simctl list runtimes available \
+              | grep -m1 '^iOS' \
+              | awk -F' - ' '{print $NF}')
+            DEVICE_TYPE_ID=$(xcrun simctl list devicetypes \
+              | grep -m1 'iPhone' \
+              | sed -E 's/.*\(([^()]+)\)$/\1/')
+            if [ -z "$RUNTIME_ID" ] || [ -z "$DEVICE_TYPE_ID" ]; then
+              echo "::error::Could not resolve an iOS runtime and/or iPhone device type to create a simulator from."
+              xcrun simctl list runtimes
+              xcrun simctl list devicetypes
+              exit 1
+            fi
+            echo "Creating simulator: device type $DEVICE_TYPE_ID, runtime $RUNTIME_ID"
+            xcrun simctl create "CI iPhone" "$DEVICE_TYPE_ID" "$RUNTIME_ID"
+            UDID=$(find_destination)
+          fi
+
+          if [ -z "$UDID" ]; then
+            echo "::error::No buildable iOS Simulator destination found for this scheme, even after creating one."
             xcodebuild -showdestinations \
               -project WorkoutTracker/WorkoutTracker.xcodeproj \
               -scheme WorkoutTracker
