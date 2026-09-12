@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Format & Lint
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SwiftFormat & SwiftLint
+        run: brew install swiftformat swiftlint
+
+      - name: SwiftFormat (lint mode)
+        run: swiftformat --lint WorkoutTracker
+
+      - name: SwiftLint
+        run: swiftlint lint --config WorkoutTracker/.swiftlint.yml --strict
+
+  test:
+    name: Build & Test
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      # Uses whichever Xcode the runner image selects by default; bump the
+      # `runs-on` image (or add an explicit xcode-select step) if the
+      # project's deployment target ever outpaces it.
+      - name: Resolve Swift Package dependencies
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project WorkoutTracker/WorkoutTracker.xcodeproj \
+            -scheme WorkoutTracker
+
+      - name: Build and test
+        run: |
+          xcodebuild test \
+            -project WorkoutTracker/WorkoutTracker.xcodeproj \
+            -scheme WorkoutTracker \
+            -destination "platform=iOS Simulator,name=iPhone 17" \
+            -skip-testing:WorkoutTrackerUITests/WorkoutTrackerUITestsLaunchTests

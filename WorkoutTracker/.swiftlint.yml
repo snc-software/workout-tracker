@@ -1,0 +1,43 @@
+included:
+  - WorkoutTracker
+  - WorkoutTrackerTests
+  - WorkoutTrackerUITests
+
+excluded:
+  - WorkoutTracker.xcodeproj
+
+# coding-standards.md: 120-char soft line-length limit
+line_length:
+  warning: 120
+  error: 200
+
+identifier_name:
+  min_length:
+    warning: 2
+  excluded:
+    - id
+
+type_name:
+  min_length:
+    warning: 2
+
+opt_in_rules:
+  - force_unwrapping
+  - empty_count
+  - closure_spacing
+  - explicit_init
+  - redundant_type_annotation
+
+# coding-standards.md: force-unwrap/force-try prohibited except a documented,
+# genuinely-impossible-to-fail invariant.
+force_unwrapping: error
+force_try: error
+force_cast: error
+
+# coding-standards.md: AnyView prohibited when a type-safe alternative exists.
+custom_rules:
+  no_any_view:
+    name: "AnyView"
+    regex: "\\bAnyView\\("
+    message: "Avoid AnyView; prefer @ViewBuilder, generics, or an enum-based view switch (coding-standards.md)."
+    severity: warning
