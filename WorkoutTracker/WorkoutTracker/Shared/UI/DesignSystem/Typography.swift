@@ -15,6 +15,7 @@ enum Typography {
     static let h2 = Font.custom("JetBrainsMono-SemiBold", size: 32, relativeTo: .title)
     static let h3 = Font.custom("JetBrainsMono-SemiBold", size: 24, relativeTo: .title2)
     static let h4 = Font.custom("JetBrainsMono-SemiBold", size: 18, relativeTo: .title3)
+    static let h5 = Font.custom("JetBrainsMono-SemiBold", size: 13, relativeTo: .subheadline)
 
     static let bodyLarge = Font.custom("Manrope-Regular", size: 17, relativeTo: .body)
     static let body = Font.custom("Manrope-Regular", size: 15, relativeTo: .callout)
