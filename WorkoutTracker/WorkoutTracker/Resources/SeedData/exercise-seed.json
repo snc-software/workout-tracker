@@ -1,0 +1,299 @@
+{
+  "categories": [
+    {
+      "id": "abs",
+      "name": "Abs"
+    },
+    {
+      "id": "arms",
+      "name": "Arms"
+    },
+    {
+      "id": "back",
+      "name": "Back"
+    },
+    {
+      "id": "calves",
+      "name": "Calves"
+    },
+    {
+      "id": "cardio",
+      "name": "Cardio"
+    },
+    {
+      "id": "chest",
+      "name": "Chest"
+    },
+    {
+      "id": "legs",
+      "name": "Legs"
+    },
+    {
+      "id": "shoulders",
+      "name": "Shoulders"
+    }
+  ],
+  "muscles": [
+    {
+      "id": "anterior-deltoid",
+      "name": "Anterior deltoid",
+      "displayName": "Shoulders",
+      "isFront": true
+    },
+    {
+      "id": "biceps-brachii",
+      "name": "Biceps brachii",
+      "displayName": "Biceps",
+      "isFront": true
+    },
+    {
+      "id": "biceps-femoris",
+      "name": "Biceps femoris",
+      "displayName": "Hamstrings",
+      "isFront": false
+    },
+    {
+      "id": "brachialis",
+      "name": "Brachialis",
+      "displayName": "",
+      "isFront": true
+    },
+    {
+      "id": "gastrocnemius",
+      "name": "Gastrocnemius",
+      "displayName": "Calves",
+      "isFront": false
+    },
+    {
+      "id": "gluteus-maximus",
+      "name": "Gluteus maximus",
+      "displayName": "Glutes",
+      "isFront": false
+    },
+    {
+      "id": "latissimus-dorsi",
+      "name": "Latissimus dorsi",
+      "displayName": "Lats",
+      "isFront": false
+    },
+    {
+      "id": "obliquus-externus-abdominis",
+      "name": "Obliquus externus abdominis",
+      "displayName": "",
+      "isFront": true
+    },
+    {
+      "id": "pectoralis-major",
+      "name": "Pectoralis major",
+      "displayName": "Chest",
+      "isFront": true
+    },
+    {
+      "id": "quadriceps-femoris",
+      "name": "Quadriceps femoris",
+      "displayName": "Quads",
+      "isFront": true
+    },
+    {
+      "id": "rectus-abdominis",
+      "name": "Rectus abdominis",
+      "displayName": "Abs",
+      "isFront": true
+    },
+    {
+      "id": "serratus-anterior",
+      "name": "Serratus anterior",
+      "displayName": "",
+      "isFront": true
+    },
+    {
+      "id": "soleus",
+      "name": "Soleus",
+      "displayName": "",
+      "isFront": false
+    },
+    {
+      "id": "trapezius",
+      "name": "Trapezius",
+      "displayName": "",
+      "isFront": false
+    },
+    {
+      "id": "triceps-brachii",
+      "name": "Triceps brachii",
+      "displayName": "Triceps",
+      "isFront": false
+    }
+  ],
+  "exercises": [
+    {
+      "name": "Barbell Deadlift",
+      "category": "back",
+      "primaryMuscles": [
+        "latissimus-dorsi"
+      ],
+      "secondaryMuscles": [
+        "gluteus-maximus"
+      ]
+    },
+    {
+      "name": "Dumbbell Flat Bench",
+      "category": "chest",
+      "primaryMuscles": [
+        "pectoralis-major"
+      ],
+      "secondaryMuscles": [
+        "anterior-deltoid",
+        "triceps-brachii"
+      ]
+    },
+    {
+      "name": "Land mine Rotation",
+      "category": "abs",
+      "primaryMuscles": [
+        "obliquus-externus-abdominis"
+      ],
+      "secondaryMuscles": [
+        "anterior-deltoid",
+        "rectus-abdominis"
+      ]
+    },
+    {
+      "name": "Single Arm Kneeling Cable Row",
+      "category": "back",
+      "primaryMuscles": [
+        "latissimus-dorsi",
+        "serratus-anterior"
+      ],
+      "secondaryMuscles": []
+    },
+    {
+      "name": "Bench Leg Raise",
+      "category": "legs",
+      "primaryMuscles": [
+        "obliquus-externus-abdominis",
+        "rectus-abdominis"
+      ],
+      "secondaryMuscles": []
+    },
+    {
+      "name": "Cyclist Squat",
+      "category": "legs",
+      "primaryMuscles": [
+        "quadriceps-femoris"
+      ],
+      "secondaryMuscles": []
+    },
+    {
+      "name": "Barbell Flat Bench Press",
+      "category": "chest",
+      "primaryMuscles": [
+        "pectoralis-major"
+      ],
+      "secondaryMuscles": [
+        "anterior-deltoid",
+        "triceps-brachii"
+      ]
+    },
+    {
+      "name": "Barbell Hip Thrust",
+      "category": "legs",
+      "primaryMuscles": [
+        "gluteus-maximus"
+      ],
+      "secondaryMuscles": []
+    },
+    {
+      "name": "Standing Dumbbell Lateral Raise",
+      "category": "shoulders",
+      "primaryMuscles": [
+        "anterior-deltoid"
+      ],
+      "secondaryMuscles": []
+    },
+    {
+      "name": "Chest Supported Dumbbell Row",
+      "category": "back",
+      "primaryMuscles": [
+        "biceps-brachii",
+        "latissimus-dorsi",
+        "trapezius"
+      ],
+      "secondaryMuscles": []
+    },
+    {
+      "name": "Calf Raise",
+      "category": "calves",
+      "primaryMuscles": [
+        "gastrocnemius"
+      ],
+      "secondaryMuscles": [
+        "soleus"
+      ]
+    },
+    {
+      "name": "Barbell Back Squat",
+      "category": "legs",
+      "primaryMuscles": [
+        "quadriceps-femoris"
+      ],
+      "secondaryMuscles": [
+        "gluteus-maximus"
+      ]
+    },
+    {
+      "name": "Close Grip Lateral Pulldown",
+      "category": "back",
+      "primaryMuscles": [
+        "latissimus-dorsi"
+      ],
+      "secondaryMuscles": []
+    },
+    {
+      "name": "Seated Dumbbell Shoulder Press",
+      "category": "shoulders",
+      "primaryMuscles": [
+        "anterior-deltoid"
+      ],
+      "secondaryMuscles": []
+    },
+    {
+      "name": "Single Leg Dumbbell RDL",
+      "category": "legs",
+      "primaryMuscles": [
+        "biceps-femoris",
+        "gluteus-maximus"
+      ],
+      "secondaryMuscles": []
+    },
+    {
+      "name": "Dumbbell Hammer Curl",
+      "category": "arms",
+      "primaryMuscles": [
+        "biceps-brachii"
+      ],
+      "secondaryMuscles": []
+    },
+    {
+      "name": "Rope Cable Tricep Pulldown",
+      "category": "arms",
+      "primaryMuscles": [
+        "triceps-brachii"
+      ],
+      "secondaryMuscles": [
+        "latissimus-dorsi"
+      ]
+    },
+    {
+      "name": "Rope Cable Crunch",
+      "category": "abs",
+      "primaryMuscles": [
+        "rectus-abdominis"
+      ],
+      "secondaryMuscles": [
+        "obliquus-externus-abdominis",
+        "serratus-anterior"
+      ]
+    }
+  ]
+}
