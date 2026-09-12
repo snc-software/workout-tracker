@@ -1,5 +1,29 @@
-# Mac OS 
+# macOS
 .DS_Store
 
-# Agentic 
+# Xcode - user-specific state (editor windows, breakpoints, tab layout)
+# Never share this: it's per-developer, not project config.
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# Xcode - build products and derived output
+build/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# Xcode - Instruments / Playgrounds
+*.trace
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Agentic
 .standards
