@@ -1,0 +1,21 @@
+--swiftversion 6.0
+
+# coding-standards.md: 120-char soft line-length limit
+--maxwidth 120
+
+--indent 4
+--indentcase false
+--trimwhitespace always
+--commas inline
+--semicolons inline
+--elseposition same-line
+--guardelse auto
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--closingparen balanced
+--self remove
+--importgrouping testable-bottom
+--stripunusedargs closure-only
+
+--exclude .build,DerivedData,**/*.xcodeproj

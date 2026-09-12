@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		66CC83BF3EDD5A145768F432 /* Iconoir in Frameworks */ = {isa = PBXBuildFile; productRef = 9A3369081B4DE4F28B2C77C7 /* Iconoir */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		998F90C130554129003B64DF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +33,22 @@
 		998F90CA30554129003B64DF /* WorkoutTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WorkoutTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4A50C2428F157F8FBCE1EF9E /* Exceptions for "WorkoutTracker" folder in "WorkoutTracker" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 998F90B030554129003B64DF /* WorkoutTracker */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		998F90B330554129003B64DF /* WorkoutTracker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4A50C2428F157F8FBCE1EF9E /* Exceptions for "WorkoutTracker" folder in "WorkoutTracker" target */,
+			);
 			path = WorkoutTracker;
 			sourceTree = "<group>";
 		};
@@ -52,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66CC83BF3EDD5A145768F432 /* Iconoir in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +130,7 @@
 			);
 			name = WorkoutTracker;
 			packageProductDependencies = (
+				9A3369081B4DE4F28B2C77C7 /* Iconoir */,
 			);
 			productName = WorkoutTracker;
 			productReference = 998F90B130554129003B64DF /* WorkoutTracker.app */;
@@ -195,6 +214,9 @@
 			);
 			mainGroup = 998F90A830554129003B64DF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				956711B816ECBC5090AB080D /* XCRemoteSwiftPackageReference "iconoir-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 998F90B230554129003B64DF /* Products */;
 			projectDirPath = "";
@@ -400,6 +422,7 @@
 				DEVELOPMENT_TEAM = QLMQ2VAY48;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WorkoutTracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -432,6 +455,7 @@
 				DEVELOPMENT_TEAM = QLMQ2VAY48;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WorkoutTracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -578,6 +602,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		956711B816ECBC5090AB080D /* XCRemoteSwiftPackageReference "iconoir-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/iconoir-icons/iconoir-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9A3369081B4DE4F28B2C77C7 /* Iconoir */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 956711B816ECBC5090AB080D /* XCRemoteSwiftPackageReference "iconoir-swift" */;
+			productName = Iconoir;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 998F90A930554129003B64DF /* Project object */;
 }

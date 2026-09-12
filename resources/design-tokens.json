@@ -1,0 +1,126 @@
+{
+  "$schema": "design-tokens-v1",
+  "name": "Raspberry / Sky Design System",
+  "color": {
+    "raspberry": {
+      "50": "#FCE4EC",
+      "100": "#F8BBD0",
+      "200": "#F48FB1",
+      "300": "#F06292",
+      "400": "#EC407A",
+      "500": "#E91E63",
+      "600": "#D81B60",
+      "700": "#C2185B",
+      "800": "#AD1457",
+      "900": "#880E4F",
+      "base": "700"
+    },
+    "sky": {
+      "50": "#F0F9FF",
+      "100": "#E0F2FE",
+      "200": "#BAE6FD",
+      "300": "#7DD3FC",
+      "400": "#38BDF8",
+      "500": "#0EA5E9",
+      "600": "#0284C7",
+      "700": "#0369A1",
+      "800": "#075985",
+      "900": "#0C4A6E",
+      "base": "100"
+    },
+    "neutral": {
+      "50": "#F8FAFC",
+      "100": "#F1F5F9",
+      "200": "#E2E8F0",
+      "300": "#CBD5E1",
+      "400": "#94A3B8",
+      "500": "#64748B",
+      "600": "#475569",
+      "700": "#334155",
+      "800": "#1E293B",
+      "900": "#0F172A",
+      "950": "#020617"
+    },
+    "semantic": {
+      "success": {
+        "light": { "bg": "#DCFCE7", "border": "#16A34A", "text": "#166534" },
+        "dark": { "bg": "#14532D", "border": "#22C55E", "text": "#86EFAC" }
+      },
+      "warning": {
+        "light": { "bg": "#FEF3C7", "border": "#D97706", "text": "#92400E" },
+        "dark": { "bg": "#78350F", "border": "#F59E0B", "text": "#FCD34D" }
+      },
+      "error": {
+        "light": { "bg": "#FEE2E2", "border": "#DC2626", "text": "#991B1B" },
+        "dark": { "bg": "#7F1D1D", "border": "#EF4444", "text": "#FCA5A5" }
+      },
+      "info": {
+        "light": { "bg": "#E0F2FE", "border": "#0284C7", "text": "#075985" },
+        "dark": { "bg": "#0C4A6E", "border": "#38BDF8", "text": "#7DD3FC" }
+      }
+    }
+  },
+  "mode": {
+    "light": {
+      "background": "#F8FAFC",
+      "surface": "#FFFFFF",
+      "surfaceAccent": "#F0F9FF",
+      "textPrimary": "#0F172A",
+      "textSecondary": "#475569",
+      "border": "#E2E8F0",
+      "primary": "#C2185B",
+      "primaryHover": "#AD1457",
+      "primarySubtleBg": "#FCE4EC",
+      "accent": "#0EA5E9",
+      "accentSubtleBg": "#E0F2FE"
+    },
+    "dark": {
+      "background": "#020617",
+      "surface": "#0F172A",
+      "surfaceAccent": "#1E293B",
+      "textPrimary": "#F8FAFC",
+      "textSecondary": "#94A3B8",
+      "border": "#334155",
+      "primary": "#EC407A",
+      "primaryHover": "#F06292",
+      "primarySubtleBg": "#880E4F",
+      "accent": "#38BDF8",
+      "accentSubtleBg": "#0C4A6E"
+    }
+  },
+  "typography": {
+    "heading": {
+      "family": "JetBrains Mono",
+      "fallback": "monospace",
+      "license": "SIL OFL 1.1 (free, commercial use)",
+      "source": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&display=swap",
+      "weights": { "medium": 500, "semibold": 600, "bold": 700 },
+      "notes": "Use tight letter-spacing (-0.02em) at large sizes to offset monospace width."
+    },
+    "body": {
+      "family": "Manrope",
+      "fallback": "sans-serif",
+      "license": "SIL OFL 1.1 (free, commercial use)",
+      "source": "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap",
+      "weights": { "regular": 400, "medium": 500, "bold": 700 }
+    }
+  },
+  "icons": {
+    "library": "Iconoir",
+    "license": "MIT (free, commercial use)",
+    "grid": "24x24",
+    "packages": {
+      "react": "iconoir-react",
+      "vue": "@iconoir/vue",
+      "flutter": "iconoir_flutter",
+      "swift": "iconoir-swift",
+      "css": "https://cdn.jsdelivr.net/npm/iconoir@7.11.0/css/iconoir.css"
+    },
+    "classPrefix": "iconoir-",
+    "recommendedTint": {
+      "primaryActions": "color.raspberry.700 (light) / color.raspberry.400 (dark)",
+      "secondaryActions": "color.sky.600 (light) / color.sky.400 (dark)",
+      "neutralActions": "color.neutral.600 (light) / color.neutral.400 (dark)"
+    }
+  }
+}

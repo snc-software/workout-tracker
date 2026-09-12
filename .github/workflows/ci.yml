@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Format & Lint
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SwiftFormat & SwiftLint
+        run: brew install swiftformat swiftlint
+
+      - name: SwiftFormat (lint mode)
+        run: swiftformat --lint WorkoutTracker
+
+      - name: SwiftLint
+        run: swiftlint lint --config WorkoutTracker/.swiftlint.yml --strict
+
+  build:
+    name: Build
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      # The runner's default-selected Xcode may not be the newest one
+      # installed on the image, and this project's deployment target can
+      # outpace an older default. Switch to the newest available Xcode
+      # rather than relying on the default.
+      - name: Select latest available Xcode
+        run: |
+          LATEST=$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1)
+          echo "Selecting $LATEST"
+          sudo xcode-select -switch "$LATEST"
+          xcodebuild -version
+
+      - name: Resolve Swift Package dependencies
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project WorkoutTracker/WorkoutTracker.xcodeproj \
+            -scheme WorkoutTracker
+
+      # Build-only validation, not `xcodebuild test`: on this runner image,
+      # actually running tests requires provisioning an iOS Simulator
+      # (downloading a runtime, first-launch setup, device creation), which
+      # repeatedly failed or was too slow/flaky to depend on in CI — see
+      # https://github.com/snc-software/workout-tracker/issues/15 for the
+      # follow-up to restore real test execution. `build-for-testing`
+      # against a generic destination still compiles the app target plus
+      # both test targets (catching test-code compile errors too) without
+      # needing any simulator runtime or device. Run
+      # WorkoutTrackerTests/WorkoutTrackerUITests locally before merging.
+      - name: Build (app + test targets)
+        run: |
+          xcodebuild build-for-testing \
+            -project WorkoutTracker/WorkoutTracker.xcodeproj \
+            -scheme WorkoutTracker \
+            -destination "generic/platform=iOS Simulator"
