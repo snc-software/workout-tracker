@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		66CC83BF3EDD5A145768F432 /* Iconoir in Frameworks */ = {isa = PBXBuildFile; productRef = 9A3369081B4DE4F28B2C77C7 /* Iconoir */; };
+		BDC0CDECFB534FCC9474B586 /* MuscleMap in Frameworks */ = {isa = PBXBuildFile; productRef = D18AEDB42756490880C2282A /* MuscleMap */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				66CC83BF3EDD5A145768F432 /* Iconoir in Frameworks */,
+				BDC0CDECFB534FCC9474B586 /* MuscleMap in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,7 @@
 			name = WorkoutTracker;
 			packageProductDependencies = (
 				9A3369081B4DE4F28B2C77C7 /* Iconoir */,
+				D18AEDB42756490880C2282A /* MuscleMap */,
 			);
 			productName = WorkoutTracker;
 			productReference = 998F90B130554129003B64DF /* WorkoutTracker.app */;
@@ -216,6 +219,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				956711B816ECBC5090AB080D /* XCRemoteSwiftPackageReference "iconoir-swift" */,
+				658BDCC82F21487D88CB8172 /* XCRemoteSwiftPackageReference "MuscleMap" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 998F90B230554129003B64DF /* Products */;
@@ -604,6 +608,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		658BDCC82F21487D88CB8172 /* XCRemoteSwiftPackageReference "MuscleMap" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/melihcolpan/MuscleMap.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.4;
+			};
+		};
 		956711B816ECBC5090AB080D /* XCRemoteSwiftPackageReference "iconoir-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/iconoir-icons/iconoir-swift";
@@ -619,6 +631,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 956711B816ECBC5090AB080D /* XCRemoteSwiftPackageReference "iconoir-swift" */;
 			productName = Iconoir;
+		};
+		D18AEDB42756490880C2282A /* MuscleMap */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 658BDCC82F21487D88CB8172 /* XCRemoteSwiftPackageReference "MuscleMap" */;
+			productName = MuscleMap;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

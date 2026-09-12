@@ -11,6 +11,8 @@ struct ExercisesView: View {
     @Query(sort: \Exercise.name) private var exercises: [Exercise]
     @Query(sort: \ExerciseCategory.name) private var categories: [ExerciseCategory]
     @State private var model = ExercisesModel()
+    @State private var isPresentingNewExercise = false
+    @State private var editingExercise: Exercise?
 
     var body: some View {
         let filtered = model.filteredExercises(from: exercises)
@@ -44,7 +46,12 @@ struct ExercisesView: View {
                     .background(Color("appBackground"))
                 } else {
                     List(filtered) { exercise in
-                        ExerciseRow(exercise: exercise)
+                        Button {
+                            editingExercise = exercise
+                        } label: {
+                            ExerciseRow(exercise: exercise)
+                        }
+                        .buttonStyle(.plain)
                     }
                     .listStyle(.plain)
                     .background(Color("appBackground"))
@@ -54,6 +61,23 @@ struct ExercisesView: View {
         .searchable(text: $model.searchText, prompt: Text("exercises.search.prompt"))
         .navigationTitle("exercises.title")
         .accessibilityIdentifier("screen.exercises")
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    isPresentingNewExercise = true
+                } label: {
+                    Iconoir.plus.asImage
+                }
+                .accessibilityIdentifier("exercises.addButton")
+                .accessibilityLabel("exercises.addButton.label")
+            }
+        }
+        .sheet(isPresented: $isPresentingNewExercise) {
+            ExerciseEditorView()
+        }
+        .sheet(item: $editingExercise) { exercise in
+            ExerciseEditorView(exercise: exercise)
+        }
     }
 }
 

@@ -19,7 +19,7 @@ extension ExerciseCategory {
 extension Muscle {
     /// Seed file → persistence.
     convenience init(dto: MuscleSeedDTO) {
-        self.init(name: dto.name, displayName: dto.displayName, isFront: dto.isFront)
+        self.init(name: dto.name, displayName: dto.displayName)
     }
 }
 

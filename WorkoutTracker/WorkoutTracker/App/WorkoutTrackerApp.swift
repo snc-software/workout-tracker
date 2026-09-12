@@ -13,6 +13,8 @@ struct WorkoutTrackerApp: App {
     private let modelContainer: ModelContainer
 
     init() {
+        Typography.configureNavigationBarAppearance()
+
         let container = PersistenceController.makeContainer()
         ExerciseSeeder.seedIfNeeded(context: container.mainContext)
         modelContainer = container

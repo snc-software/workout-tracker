@@ -1,5 +1,5 @@
 {
-  "originHash" : "89dc008fa3529afe420f2cf1536b409d6283ba79169b24f5c8d50759669a3ab4",
+  "originHash" : "2d3366fbd4baf7ce39d33d3e4f0755f7c4d8379d73b0ee9189dd3fa64821a81d",
   "pins" : [
     {
       "identity" : "iconoir-swift",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "66391f61281c4c203ae2003ebf66627dc849f233",
         "version" : "7.5.1"
+      }
+    },
+    {
+      "identity" : "musclemap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/melihcolpan/MuscleMap.git",
+      "state" : {
+        "revision" : "7dc03071e03052e8bd4f6351e9176994cd28aa7d",
+        "version" : "1.6.4"
       }
     }
   ],

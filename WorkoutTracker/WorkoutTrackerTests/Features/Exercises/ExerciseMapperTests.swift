@@ -16,13 +16,12 @@ struct ExerciseMapperTests {
     }
 
     @Test func muscleMapsAllFieldsFromSeedDTO() {
-        let dto = MuscleSeedDTO(id: "latissimus-dorsi", name: "Latissimus dorsi", displayName: "Lats", isFront: false)
+        let dto = MuscleSeedDTO(id: "upper-back", name: "upper-back", displayName: "Lats")
 
         let muscle = Muscle(dto: dto)
 
-        #expect(muscle.name == "Latissimus dorsi")
+        #expect(muscle.name == "upper-back")
         #expect(muscle.displayName == "Lats")
-        #expect(muscle.isFront == false)
     }
 
     @Test func exerciseWiresResolvedRelationships() {
@@ -33,8 +32,8 @@ struct ExerciseMapperTests {
             secondaryMuscles: ["gluteus-maximus"]
         )
         let category = ExerciseCategory(name: "Back")
-        let lats = Muscle(name: "Latissimus dorsi", displayName: "Lats", isFront: false)
-        let glutes = Muscle(name: "Gluteus maximus", displayName: "Glutes", isFront: false)
+        let lats = Muscle(name: "upper-back", displayName: "Lats")
+        let glutes = Muscle(name: "gluteal", displayName: "Glutes")
 
         let exercise = Exercise(dto: dto, category: category, primaryMuscles: [lats], secondaryMuscles: [glutes])
 
