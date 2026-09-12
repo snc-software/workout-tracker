@@ -42,6 +42,12 @@ jobs:
           echo "Selecting $LATEST"
           sudo xcode-select -switch "$LATEST"
           xcodebuild -version
+          # A freshly-selected Xcode needs its first-launch setup run once
+          # (license acceptance, CoreSimulator/platform registration) or
+          # later simctl/xcodebuild simulator calls fail with errors like
+          # "Unable to connect to simulator".
+          sudo xcodebuild -license accept
+          sudo xcodebuild -runFirstLaunch
 
       - name: Resolve Swift Package dependencies
         run: |
