@@ -4,6 +4,7 @@
 //
 
 import Iconoir
+import SwiftData
 import SwiftUI
 
 enum AppTab: Hashable {
@@ -59,5 +60,9 @@ struct RootView: View {
 }
 
 #Preview {
-    RootView()
+    let container = PersistenceController.makeContainer(inMemory: true)
+    ExerciseSeeder.seedIfNeeded(context: container.mainContext)
+
+    return RootView()
+        .modelContainer(container)
 }

@@ -100,13 +100,35 @@
         }
       }
     },
-    "exercises.placeholder": {
+    "exercises.search.prompt": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Your exercise library is coming soon."
+            "value": "Search exercises"
+          }
+        }
+      }
+    },
+    "exercises.empty.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Exercises Found"
+          }
+        }
+      }
+    },
+    "exercises.empty.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try a different search term."
           }
         }
       }
@@ -129,6 +151,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Settings, history, and records will live here soon."
+          }
+        }
+      }
+    },
+    "exercises.category.all": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
           }
         }
       }
