@@ -146,8 +146,8 @@ struct MuscleGroupPickerView: View {
 
     private var titleKey: LocalizedStringKey {
         switch group {
-        case .primary: return "exercises.editor.picker.primary.title"
-        case .secondary: return "exercises.editor.picker.secondary.title"
+        case .primary: "exercises.editor.picker.primary.title"
+        case .secondary: "exercises.editor.picker.secondary.title"
         }
     }
 }

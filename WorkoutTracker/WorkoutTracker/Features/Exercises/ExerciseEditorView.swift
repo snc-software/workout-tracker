@@ -19,8 +19,8 @@ struct ExerciseEditorView: View {
     private let isEditing: Bool
 
     init(exercise: Exercise? = nil) {
-        self.isEditing = exercise != nil
-        self._model = State(initialValue: ExerciseEditorModel(exercise: exercise))
+        isEditing = exercise != nil
+        _model = State(initialValue: ExerciseEditorModel(exercise: exercise))
     }
 
     var body: some View {
@@ -96,7 +96,6 @@ struct ExerciseEditorView: View {
         }
     }
 
-    @ViewBuilder
     private func muscleGroupSection(
         titleKey: LocalizedStringKey,
         muscles: Set<Muscle>,

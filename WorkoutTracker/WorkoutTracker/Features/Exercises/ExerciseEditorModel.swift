@@ -4,8 +4,8 @@
 //
 
 import Foundation
-import SwiftData
 import os
+import SwiftData
 
 @Observable
 final class ExerciseEditorModel {
@@ -13,7 +13,9 @@ final class ExerciseEditorModel {
         case primary
         case secondary
 
-        var id: Self { self }
+        var id: Self {
+            self
+        }
     }
 
     private static let logger = Logger(subsystem: "com.workouttracker", category: "ExerciseEditorModel")
@@ -29,10 +31,10 @@ final class ExerciseEditorModel {
     }
 
     init(exercise: Exercise?) {
-        self.existingExercise = exercise
-        self.name = exercise?.name ?? ""
-        self.primaryMuscles = Set(exercise?.primaryMuscles ?? [])
-        self.secondaryMuscles = Set(exercise?.secondaryMuscles ?? [])
+        existingExercise = exercise
+        name = exercise?.name ?? ""
+        primaryMuscles = Set(exercise?.primaryMuscles ?? [])
+        secondaryMuscles = Set(exercise?.secondaryMuscles ?? [])
     }
 
     func toggle(_ muscle: Muscle, in group: MuscleSelectionGroup) {

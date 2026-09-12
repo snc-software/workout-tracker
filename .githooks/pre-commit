@@ -1,0 +1,23 @@
+#!/bin/sh
+# Auto-formats staged Swift files with SwiftFormat before commit, using the
+# same config CI lints against (WorkoutTracker/.swiftformat), so a commit
+# can't drift from what `swiftformat --lint` will enforce in CI.
+#
+# Enabled via `git config core.hooksPath .githooks` (see README/setup docs).
+
+set -e
+
+staged_swift_files=$(git diff --cached --name-only --diff-filter=ACMR -- '*.swift')
+
+if [ -z "$staged_swift_files" ]; then
+    exit 0
+fi
+
+if ! command -v swiftformat >/dev/null 2>&1; then
+    echo "warning: swiftformat not installed (brew install swiftformat) — skipping format-on-commit" >&2
+    exit 0
+fi
+
+echo "$staged_swift_files" | tr '\n' '\0' | xargs -0 swiftformat --quiet
+
+echo "$staged_swift_files" | tr '\n' '\0' | xargs -0 git add
