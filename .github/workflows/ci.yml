@@ -32,19 +32,45 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Uses whichever Xcode the runner image selects by default; bump the
-      # `runs-on` image (or add an explicit xcode-select step) if the
-      # project's deployment target ever outpaces it.
+      # The runner's default-selected Xcode may not be the newest one
+      # installed on the image, and may not carry a simulator runtime for
+      # this project's deployment target. Switch to the newest available
+      # Xcode rather than relying on the default.
+      - name: Select latest available Xcode
+        run: |
+          LATEST=$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1)
+          echo "Selecting $LATEST"
+          sudo xcode-select -switch "$LATEST"
+          xcodebuild -version
+
       - name: Resolve Swift Package dependencies
         run: |
           xcodebuild -resolvePackageDependencies \
             -project WorkoutTracker/WorkoutTracker.xcodeproj \
             -scheme WorkoutTracker
 
+      # Device names/availability drift between runner images and Xcode
+      # versions, so pick whatever iPhone simulator is actually installed
+      # rather than hardcoding a model name that may not exist.
+      - name: Determine simulator destination
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available \
+            | grep -E '^\s+iPhone' \
+            | grep -oE '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}' \
+            | head -1)
+          if [ -z "$UDID" ]; then
+            echo "::error::No available iPhone simulator found on this runner."
+            xcrun simctl list devices
+            exit 1
+          fi
+          echo "Using simulator $UDID"
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+
       - name: Build and test
         run: |
           xcodebuild test \
             -project WorkoutTracker/WorkoutTracker.xcodeproj \
             -scheme WorkoutTracker \
-            -destination "platform=iOS Simulator,name=iPhone 17" \
+            -destination "platform=iOS Simulator,id=${{ steps.sim.outputs.udid }}" \
             -skip-testing:WorkoutTrackerUITests/WorkoutTrackerUITestsLaunchTests
