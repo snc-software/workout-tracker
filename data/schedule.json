@@ -1,0 +1,19 @@
+{
+  "id": "uuidv7",
+  "dayOfWeek": "Monday",
+  "name": "User Defined or Exercise index 1",
+  "exercises": [
+    {
+      "index": 1,
+      "exerciseId": "uuidV7",
+      "supersetId": "uuidV7 (optional)"
+    }
+  ],
+  "supersets": [
+    {
+      "id": "uuidv7",
+      "name": "Superset A",
+      "index": 2
+    }
+  ]
+}

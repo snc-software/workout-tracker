@@ -1,0 +1,27 @@
+{
+  "date": "2026-09-12",
+  "start": "08:00",
+  "end": "09:00",
+  "name": "From Schedule or index 1",
+  "exercises": [
+    {
+      "index": 1,
+      "exerciseId": "uuidV7",
+      "supersetId": "uuidV7 (optional)",
+      "sets": [
+        {
+          "index": 1,
+          "reps": 10,
+          "weightKg": 10
+        }
+      ]
+    }
+  ],
+  "supersets": [
+    {
+      "id": "uuidv7",
+      "name": "Superset A",
+      "index": 2
+    }
+  ]
+}
