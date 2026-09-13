@@ -137,21 +137,21 @@ struct SessionSummaryView: View {
 
     private var statsRow: some View {
         HStack(spacing: 8) {
-            SessionStatTile(
+            StatTile(
                 icon: .clock,
                 value: elapsedText,
                 label: "sessionSummary.stat.elapsed",
                 accessibilityLabel: elapsedAccessibilityLabel,
                 identifier: "sessionSummary.stat.elapsed"
             )
-            SessionStatTile(
+            StatTile(
                 icon: .repeatIcon,
                 value: totalRepsText,
                 label: "sessionSummary.stat.totalReps",
                 accessibilityLabel: totalRepsAccessibilityLabel,
                 identifier: "sessionSummary.stat.totalReps"
             )
-            SessionStatTile(
+            StatTile(
                 icon: .weight,
                 value: totalVolumeText,
                 label: "sessionSummary.stat.totalVolume",

@@ -22,6 +22,9 @@ enum Typography {
     static let caption = Font.custom("Manrope-Regular", size: 13, relativeTo: .footnote)
     static let caption2 = Font.custom("Manrope-Regular", size: 11, relativeTo: .caption2)
 
+    /// Small uppercase eyebrow labels (e.g. "THIS WEEK") — caption2's size in the heading face.
+    static let overline = Font.custom("JetBrainsMono-SemiBold", size: 11, relativeTo: .caption2)
+
     /// `.navigationTitle` has no font modifier of its own, so the heading font is applied via
     /// `UINavigationBarAppearance` once at launch rather than per-screen.
     static func configureNavigationBarAppearance() {
