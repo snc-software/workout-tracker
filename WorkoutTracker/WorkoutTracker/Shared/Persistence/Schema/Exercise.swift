@@ -13,6 +13,7 @@ final class Exercise {
     var category: ExerciseCategory?
     @Relationship(inverse: \Muscle.exercisesAsPrimary) var primaryMuscles: [Muscle]
     @Relationship(inverse: \Muscle.exercisesAsSecondary) var secondaryMuscles: [Muscle]
+    @Relationship(deleteRule: .cascade, inverse: \PersonalRecord.exercise) var personalRecord: PersonalRecord?
 
     init(
         id: UUID = UUID(),
@@ -26,5 +27,6 @@ final class Exercise {
         self.category = category
         self.primaryMuscles = primaryMuscles
         self.secondaryMuscles = secondaryMuscles
+        personalRecord = nil
     }
 }
