@@ -195,10 +195,11 @@ final class WorkoutBuilderModel {
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         let resolvedName = trimmedName.isEmpty ? nil : trimmedName
 
-        let workout: ScheduledWorkout
-        if let matchedWorkout = try existingWorkout ?? context.fetch(FetchDescriptor<ScheduledWorkout>())
+        let matchedWorkout = try existingWorkout ?? context.fetch(FetchDescriptor<ScheduledWorkout>())
             .first(where: { $0.dayOfWeek == day })
-        {
+
+        let workout: ScheduledWorkout
+        if let matchedWorkout {
             workout = matchedWorkout
             workout.name = resolvedName
 
