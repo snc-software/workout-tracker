@@ -18,6 +18,11 @@ enum DayOfWeek: Int, CaseIterable, Codable, Sendable, Identifiable {
 
     static let orderedMondayFirst: [DayOfWeek] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
 
+    /// Today's day, per the system calendar and clock.
+    static var today: DayOfWeek {
+        DayOfWeek(rawValue: Calendar.current.component(.weekday, from: Date())) ?? .sunday
+    }
+
     var id: Int {
         rawValue
     }

@@ -29,4 +29,15 @@ struct ScheduleModelTests {
 
         #expect(model.exerciseCount(for: workout) == 2)
     }
+
+    @Test func scheduledDaysReturnsOnlyDaysWithAWorkoutInMondayFirstOrder() {
+        let model = ScheduleModel()
+        let workouts = [
+            ScheduledWorkout(dayOfWeek: .friday),
+            ScheduledWorkout(dayOfWeek: .monday),
+            ScheduledWorkout(dayOfWeek: .wednesday)
+        ]
+
+        #expect(model.scheduledDays(from: workouts) == [.monday, .wednesday, .friday])
+    }
 }
