@@ -4,6 +4,9 @@
     "" : {
 
     },
+    " · %@" : {
+
+    },
     "%@ · ^[%lld rep](inflect: true)" : {
       "localizations" : {
         "en" : {
@@ -20,12 +23,23 @@
     "^[%lld exercise](inflect: true)" : {
 
     },
-    "^[%lld set](inflect: true) · ^[%lld rep](inflect: true) · %@" : {
+    "^[%lld set](inflect: true) · ^[%lld rep](inflect: true)" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "^[%1$lld set](inflect: true) · ^[%2$lld rep](inflect: true) · %3$@"
+            "value" : "^[%1$lld set](inflect: true) · ^[%2$lld rep](inflect: true)"
+          }
+        }
+      }
+    },
+    "dashboard.historyButton.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View History"
           }
         }
       }
@@ -389,6 +403,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exercises"
+          }
+        }
+      }
+    },
+    "history.empty.subtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finish a workout to see it here."
+          }
+        }
+      }
+    },
+    "history.empty.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No workouts yet"
+          }
+        }
+      }
+    },
+    "history.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
           }
         }
       }
