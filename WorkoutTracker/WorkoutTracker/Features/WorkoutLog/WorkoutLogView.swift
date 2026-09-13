@@ -166,12 +166,10 @@ struct WorkoutLogView: View {
     private func save() {
         do {
             let log = try model.save(context: modelContext)
-            let summary = SessionSummaryModel(workoutLog: log)
-            try summary.applyNewPersonalRecords(context: modelContext)
-            summaryModel = summary
+            summaryModel = SessionSummaryModel(workoutLog: log)
         } catch {
-            // Save failure is logged inside WorkoutLogModel/SessionSummaryModel; the logging screen stays
-            // open so the developer can retry rather than silently losing the entered data.
+            // Save failure is logged inside WorkoutLogModel; the logging screen stays open so the developer
+            // can retry rather than silently losing the entered data.
         }
     }
 }

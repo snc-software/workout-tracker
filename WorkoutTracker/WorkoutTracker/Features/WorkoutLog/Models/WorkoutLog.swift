@@ -17,6 +17,15 @@ final class WorkoutLog {
     @Relationship(deleteRule: .cascade, inverse: \WorkoutLogExercise.workoutLog)
     var exercises: [WorkoutLogExercise]
 
+    /// `name` when set, otherwise the first exercise's name so a custom-started log (which has no
+    /// `name`) still reads as itself rather than falling back to a generic label.
+    var displayTitle: String {
+        if let name, !name.isEmpty {
+            return name
+        }
+        return exercises.min(by: { $0.order < $1.order })?.exercise.name ?? ""
+    }
+
     init(
         id: UUID = UUID(),
         startedAt: Date,

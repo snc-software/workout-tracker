@@ -3,6 +3,7 @@
 //  WorkoutTrackerTests
 //
 
+import Foundation
 import SwiftData
 import Testing
 @testable import WorkoutTracker
@@ -61,7 +62,7 @@ struct RecordEditorModelTests {
     @Test func saveOnModelInitializedFromExistingRecordUpdatesItInPlace() throws {
         let context = ModelContext(PersistenceController.makeContainer(inMemory: true))
         let exercise = Exercise(name: "Bench Press")
-        let record = PersonalRecord(exercise: exercise, weightKg: 80)
+        let record = PersonalRecord(exercise: exercise, weightKg: 80, achievedAt: Date(timeIntervalSince1970: 0))
         context.insert(exercise)
         context.insert(record)
         try context.save()
@@ -74,6 +75,7 @@ struct RecordEditorModelTests {
         let all = try context.fetch(FetchDescriptor<PersonalRecord>())
         #expect(all.count == 1)
         #expect(all.first?.weightKg == 85)
+        #expect(all.first?.achievedAt != Date(timeIntervalSince1970: 0))
     }
 
     @Test func removeRecordDeletesTheExistingRecord() throws {

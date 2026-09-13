@@ -32,7 +32,6 @@ struct SessionSummary {
 
     struct NewPersonalRecord: Identifiable {
         let exercise: Exercise
-        let previousWeightKg: Double?
         let weightKg: Double
 
         var id: UUID {

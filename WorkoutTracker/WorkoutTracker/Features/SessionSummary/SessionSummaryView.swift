@@ -9,7 +9,9 @@ import SwiftUI
 
 struct SessionSummaryView: View {
     let model: SessionSummaryModel
-    let onFinish: () -> Void
+    /// `nil` when this screen is reached by pushing from `HistoryView` — there, the system back button
+    /// is the only way out, and a "Finish" action makes no sense for a workout that isn't being logged.
+    let onFinish: (() -> Void)?
 
     private var summary: SessionSummary {
         model.summary
@@ -67,13 +69,15 @@ struct SessionSummaryView: View {
         .background(Color("appBackground"))
         .accessibilityIdentifier("screen.sessionSummary")
         .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-                Button {
-                    onFinish()
-                } label: {
-                    Text("sessionSummary.finish").font(Typography.body)
+            if let onFinish {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button {
+                        onFinish()
+                    } label: {
+                        Text("sessionSummary.finish").font(Typography.body)
+                    }
+                    .accessibilityIdentifier("sessionSummary.finish")
                 }
-                .accessibilityIdentifier("sessionSummary.finish")
             }
         }
     }

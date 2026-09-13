@@ -45,6 +45,19 @@ struct DashboardView: View {
             .buttonStyle(.plain)
             .accessibilityIdentifier("dashboard.recordsButton")
 
+            NavigationLink {
+                HistoryView()
+            } label: {
+                Text("dashboard.historyButton.label")
+                    .font(Typography.body)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 12)
+                    .background(Capsule().fill(Color("primaryBrand")))
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("dashboard.historyButton")
+
             Button {
                 isPresentingStartWorkout = true
             } label: {

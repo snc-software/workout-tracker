@@ -8,8 +8,9 @@
 import Foundation
 
 extension SessionSummary {
-    /// Persistence → domain. Reads `Exercise.personalRecord` to detect a new PR but never mutates it —
-    /// applying a detected PR to the store is a deliberate follow-up step owned by `SessionSummaryModel`.
+    /// Persistence → domain. `entry.personalRecordWeightKg` is read as-is, not re-derived — see
+    /// `WorkoutLogModel.applyPersonalRecords(finishedAt:context:)`, the single place "was this a PR" is
+    /// decided.
     init(workoutLog: WorkoutLog) {
         let activeEntries = workoutLog.exercises.filter { !$0.isSkipped }.sorted { $0.order < $1.order }
 
@@ -39,16 +40,8 @@ extension SessionSummary {
                 )
             )
 
-            let existingRecordWeightKg = entry.exercise.personalRecord?.weightKg
-            let beatsExistingRecord = existingRecordWeightKg.map { maxWeightKg > $0 } ?? true
-            if maxWeightKg > 0, beatsExistingRecord {
-                newRecords.append(
-                    NewPersonalRecord(
-                        exercise: entry.exercise,
-                        previousWeightKg: existingRecordWeightKg,
-                        weightKg: maxWeightKg
-                    )
-                )
+            if let personalRecordWeightKg = entry.personalRecordWeightKg {
+                newRecords.append(NewPersonalRecord(exercise: entry.exercise, weightKg: personalRecordWeightKg))
             }
 
             primaryMuscles.formUnion(entry.exercise.primaryMuscles)

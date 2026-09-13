@@ -196,6 +196,7 @@ final class WorkoutLogModel {
             }
         }
         log.exercises = entries
+        applyPersonalRecords(finishedAt: finishedAt, context: context)
 
         do {
             try context.save()
@@ -205,6 +206,28 @@ final class WorkoutLogModel {
         }
 
         return log
+    }
+
+    /// For each non-skipped entry whose heaviest set beats the exercise's current `PersonalRecord` (or it
+    /// doesn't have one yet), stamps the achieved weight onto the entry and updates/inserts the record,
+    /// dated to this workout's finish time. Runs once, here, so "was this a PR" is a persisted fact rather
+    /// than something re-derived later against `Exercise.personalRecord`, which moves on after this call.
+    private func applyPersonalRecords(finishedAt: Date, context: ModelContext) {
+        for entry in entries where !entry.isSkipped {
+            let maxWeightKg = entry.sets.map(\.weightKg).max() ?? 0
+            guard maxWeightKg > 0 else { continue }
+
+            let existingWeightKg = entry.exercise.personalRecord?.weightKg
+            guard existingWeightKg.map({ maxWeightKg > $0 }) ?? true else { continue }
+
+            entry.personalRecordWeightKg = maxWeightKg
+            if let existingRecord = entry.exercise.personalRecord {
+                existingRecord.weightKg = maxWeightKg
+                existingRecord.achievedAt = finishedAt
+            } else {
+                context.insert(PersonalRecord(exercise: entry.exercise, weightKg: maxWeightKg, achievedAt: finishedAt))
+            }
+        }
     }
 
     private func renumberOrder() {

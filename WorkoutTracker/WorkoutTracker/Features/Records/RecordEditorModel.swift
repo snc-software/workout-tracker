@@ -33,6 +33,7 @@ final class RecordEditorModel {
     func save(context: ModelContext) throws {
         if let existingRecord {
             existingRecord.weightKg = weightKg
+            existingRecord.achievedAt = Date()
         } else {
             let record = PersonalRecord(exercise: exercise, weightKg: weightKg)
             context.insert(record)

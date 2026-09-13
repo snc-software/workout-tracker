@@ -116,16 +116,16 @@ struct SessionSummaryMapperTests {
         #expect(Set(summary.secondaryMuscles) == [shoulders])
     }
 
-    @Test func newPersonalRecordIncludesExerciseWhoseSessionMaxBeatsItsExistingRecord() throws {
-        benchPress.personalRecord = PersonalRecord(exercise: benchPress, weightKg: 80)
+    @Test func newPersonalRecordsIncludesEntriesWithAPersistedPersonalRecordWeight() throws {
+        // "Was this a PR" is decided once, at save time, by `WorkoutLogModel.applyPersonalRecords` — the
+        // mapper just reads `entry.personalRecordWeightKg` as-is, whether this is the first render right
+        // after finishing or a later one (e.g. from History).
         let log = makeLog(exercises: [
             WorkoutLogExercise(
                 exercise: benchPress,
                 order: 0,
-                sets: [
-                    WorkoutSetLog(order: 0, weightKg: 70, reps: 8),
-                    WorkoutSetLog(order: 1, weightKg: 90, reps: 3)
-                ]
+                personalRecordWeightKg: 90,
+                sets: [WorkoutSetLog(order: 0, weightKg: 90, reps: 3)]
             )
         ])
 
@@ -134,25 +134,10 @@ struct SessionSummaryMapperTests {
         let newRecord = try #require(summary.newPersonalRecords.first)
         #expect(summary.newPersonalRecords.count == 1)
         #expect(newRecord.exercise == benchPress)
-        #expect(newRecord.previousWeightKg == 80)
         #expect(newRecord.weightKg == 90)
     }
 
-    @Test func noExistingRecordAndAPositiveLoggedWeightCountsAsANewPersonalRecordWithNilPreviousWeight() throws {
-        let log = makeLog(exercises: [
-            WorkoutLogExercise(exercise: benchPress, order: 0, sets: [WorkoutSetLog(order: 0, weightKg: 50, reps: 10)])
-        ])
-
-        let summary = SessionSummary(workoutLog: log)
-
-        let newRecord = try #require(summary.newPersonalRecords.first)
-        #expect(summary.newPersonalRecords.count == 1)
-        #expect(newRecord.previousWeightKg == nil)
-        #expect(newRecord.weightKg == 50)
-    }
-
-    @Test func noNewPersonalRecordWhenSessionMaxDoesNotBeatTheExistingRecord() {
-        benchPress.personalRecord = PersonalRecord(exercise: benchPress, weightKg: 100)
+    @Test func newPersonalRecordsExcludesEntriesWithNoPersistedPersonalRecordWeight() {
         let log = makeLog(exercises: [
             WorkoutLogExercise(exercise: benchPress, order: 0, sets: [WorkoutSetLog(order: 0, weightKg: 80, reps: 8)])
         ])
