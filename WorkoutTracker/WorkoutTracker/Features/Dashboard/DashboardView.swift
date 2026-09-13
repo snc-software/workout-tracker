@@ -9,72 +9,31 @@ import SwiftUI
 
 struct DashboardView: View {
     @Query private var scheduledWorkouts: [ScheduledWorkout]
+    @Query private var workoutLogs: [WorkoutLog]
     @State private var scheduleModel = ScheduleModel()
+    @State private var dashboardModel = DashboardModel()
     @State private var isPresentingRecords = false
     @State private var isPresentingStartWorkout = false
     @State private var workoutLogSource: WorkoutLogModel.Source?
 
     var body: some View {
-        VStack(spacing: 12) {
-            Iconoir.homeSimple.asImage
-                .font(.system(size: 40))
-                .foregroundStyle(Color("textSecondary"))
-                .accessibilityHidden(true)
-            Text("dashboard.title")
-                .font(Typography.h2)
-                .foregroundStyle(Color("textPrimary"))
-            Text("dashboard.placeholder")
-                .font(Typography.body)
-                .foregroundStyle(Color("textSecondary"))
-                .multilineTextAlignment(.center)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                DashboardHeaderView(greetingPeriod: dashboardModel.greetingPeriod(), date: .now)
+                DashboardStatsCard(stats: dashboardModel.stats(from: workoutLogs))
 
-            if let todayWorkout = scheduleModel.workout(for: .today, in: scheduledWorkouts) {
-                startTodayWorkoutPanel(for: todayWorkout)
-            }
+                if let todayWorkout = scheduleModel.workout(for: .today, in: scheduledWorkouts) {
+                    UpcomingWorkoutCard(workout: todayWorkout) {
+                        workoutLogSource = .scheduled(todayWorkout)
+                    }
+                }
 
-            Button {
-                isPresentingRecords = true
-            } label: {
-                Text("dashboard.recordsButton.label")
-                    .font(Typography.body)
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
-                    .background(Capsule().fill(Color("primaryBrand")))
+                quickNavRow
+                startWorkoutButton
             }
-            .buttonStyle(.plain)
-            .accessibilityIdentifier("dashboard.recordsButton")
-
-            NavigationLink {
-                HistoryView()
-            } label: {
-                Text("dashboard.historyButton.label")
-                    .font(Typography.body)
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
-                    .background(Capsule().fill(Color("primaryBrand")))
-            }
-            .buttonStyle(.plain)
-            .accessibilityIdentifier("dashboard.historyButton")
-
-            Button {
-                isPresentingStartWorkout = true
-            } label: {
-                Text("dashboard.startWorkoutButton.label")
-                    .font(Typography.body)
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
-                    .background(Capsule().fill(Color("primaryBrand")))
-            }
-            .buttonStyle(.plain)
-            .accessibilityIdentifier("dashboard.startWorkoutButton")
+            .padding()
         }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color("appBackground"))
-        .navigationTitle("dashboard.title")
         .accessibilityIdentifier("screen.dashboard")
         .sheet(isPresented: $isPresentingRecords) {
             RecordsView()
@@ -89,27 +48,43 @@ struct DashboardView: View {
         }
     }
 
-    private func startTodayWorkoutPanel(for workout: ScheduledWorkout) -> some View {
+    private var quickNavRow: some View {
+        HStack(spacing: 10) {
+            NavigationLink {
+                HistoryView()
+            } label: {
+                QuickNavCard(icon: .clockRotateRight, label: "dashboard.historyButton.label")
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("dashboard.historyButton")
+
+            Button {
+                isPresentingRecords = true
+            } label: {
+                QuickNavCard(icon: .trophy, label: "dashboard.recordsButton.label")
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("dashboard.recordsButton")
+        }
+    }
+
+    private var startWorkoutButton: some View {
         Button {
-            workoutLogSource = .scheduled(workout)
+            isPresentingStartWorkout = true
         } label: {
-            VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    Iconoir.playSolid.asImage
-                    Text("dashboard.startTodayWorkout.title")
-                        .font(Typography.h4)
-                }
-                Text("dashboard.startTodayWorkout.subtitle")
-                    .font(Typography.caption)
+            HStack(spacing: 8) {
+                Iconoir.playSolid.asImage
+                Text("dashboard.startWorkoutButton.label")
+                    .font(Typography.h4)
             }
             .foregroundStyle(.white)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(16)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
         }
         .buttonStyle(.plain)
         .background(Color("primaryBrand"))
-        .clipShape(RoundedRectangle(cornerRadius: 14))
-        .accessibilityIdentifier("dashboard.startTodayWorkout")
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .accessibilityIdentifier("dashboard.startWorkoutButton")
     }
 }
 

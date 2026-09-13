@@ -33,6 +33,39 @@
         }
       }
     },
+    "dashboard.greeting.afternoon" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good Afternoon"
+          }
+        }
+      }
+    },
+    "dashboard.greeting.evening" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good Evening"
+          }
+        }
+      }
+    },
+    "dashboard.greeting.morning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good Morning"
+          }
+        }
+      }
+    },
     "dashboard.historyButton.label" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -44,17 +77,6 @@
         }
       }
     },
-    "dashboard.placeholder" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your training at a glance is coming soon."
-          }
-        }
-      }
-    },
     "dashboard.recordsButton.label" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -62,17 +84,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "View Records"
-          }
-        }
-      }
-    },
-    "dashboard.startTodayWorkout.subtitle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Log the workout scheduled for today"
           }
         }
       }
@@ -99,13 +110,79 @@
         }
       }
     },
-    "dashboard.title" : {
+    "dashboard.stats.streak" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dashboard"
+            "value" : "Week streak"
+          }
+        }
+      }
+    },
+    "dashboard.stats.streak.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ week streak"
+          }
+        }
+      }
+    },
+    "dashboard.stats.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Week"
+          }
+        }
+      }
+    },
+    "dashboard.stats.weightLifted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kg lifted"
+          }
+        }
+      }
+    },
+    "dashboard.stats.weightLifted.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kilograms lifted this week"
+          }
+        }
+      }
+    },
+    "dashboard.stats.workouts" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workouts"
+          }
+        }
+      }
+    },
+    "dashboard.stats.workouts.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ workouts this week"
           }
         }
       }

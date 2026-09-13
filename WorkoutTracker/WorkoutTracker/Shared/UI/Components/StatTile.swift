@@ -1,17 +1,18 @@
 //
-//  SessionStatTile.swift
+//  StatTile.swift
 //  WorkoutTracker
 //
 
 import Iconoir
 import SwiftUI
 
-struct SessionStatTile: View {
+struct StatTile: View {
     let icon: Iconoir
     let value: String
     let label: LocalizedStringKey
     let accessibilityLabel: String
     let identifier: String
+    var isBordered: Bool = true
 
     var body: some View {
         VStack(spacing: 4) {
@@ -31,7 +32,7 @@ struct SessionStatTile: View {
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color("border"), lineWidth: 0.5)
+                .stroke(Color("border"), lineWidth: isBordered ? 0.5 : 0)
         )
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
@@ -41,21 +42,21 @@ struct SessionStatTile: View {
 
 #Preview {
     HStack(spacing: 8) {
-        SessionStatTile(
+        StatTile(
             icon: .clock,
             value: "42 min",
             label: "sessionSummary.stat.elapsed",
             accessibilityLabel: "42 min elapsed",
             identifier: "sessionSummary.stat.elapsed"
         )
-        SessionStatTile(
+        StatTile(
             icon: .repeatIcon,
             value: "64",
             label: "sessionSummary.stat.totalReps",
             accessibilityLabel: "64 total reps",
             identifier: "sessionSummary.stat.totalReps"
         )
-        SessionStatTile(
+        StatTile(
             icon: .weight,
             value: "2,340 kg",
             label: "sessionSummary.stat.totalVolume",

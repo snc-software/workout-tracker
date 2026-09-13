@@ -32,7 +32,6 @@ struct StartWorkoutView: View {
             .background(Color("appBackground"))
             .navigationTitle("startWorkout.title")
             .navigationBarTitleDisplayMode(.inline)
-            .accessibilityIdentifier("screen.startWorkout")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button {
@@ -44,6 +43,7 @@ struct StartWorkoutView: View {
                 }
             }
         }
+        .accessibilityIdentifier("screen.startWorkout")
     }
 
     private func startTodayButton(for workout: ScheduledWorkout) -> some View {
