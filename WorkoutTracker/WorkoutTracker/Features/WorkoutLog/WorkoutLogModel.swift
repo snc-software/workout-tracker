@@ -180,10 +180,11 @@ final class WorkoutLogModel {
         }
     }
 
-    func save(context: ModelContext, finishedAt: Date = Date()) throws {
-        guard canSave else { return }
-
+    @discardableResult
+    func save(context: ModelContext, finishedAt: Date = Date()) throws -> WorkoutLog {
         let log = WorkoutLog(startedAt: startedAt, finishedAt: finishedAt, name: name)
+        guard canSave else { return log }
+
         context.insert(log)
 
         for entry in entries {
@@ -202,6 +203,8 @@ final class WorkoutLogModel {
             Self.logger.error("Failed to save workout log: \(error)")
             throw error
         }
+
+        return log
     }
 
     private func renumberOrder() {

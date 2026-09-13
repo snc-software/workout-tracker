@@ -1,9 +1,35 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {},
-    "%lld" : {},
-    "^[%lld exercise](inflect: true)" : {},
+    "" : {
+
+    },
+    "%@ · ^[%lld rep](inflect: true)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · ^[%2$lld rep](inflect: true)"
+          }
+        }
+      }
+    },
+    "%lld" : {
+
+    },
+    "^[%lld exercise](inflect: true)" : {
+
+    },
+    "^[%lld set](inflect: true) · ^[%lld rep](inflect: true) · %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "^[%1$lld set](inflect: true) · ^[%2$lld rep](inflect: true) · %3$@"
+          }
+        }
+      }
+    },
     "dashboard.placeholder" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -631,17 +657,6 @@
         }
       }
     },
-    "schedule.builder.groupIntoSuperset" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Group into superset"
-          }
-        }
-      }
-    },
     "schedule.builder.grouping.cancel" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -660,6 +675,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Group"
+          }
+        }
+      }
+    },
+    "schedule.builder.groupIntoSuperset" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group into superset"
           }
         }
       }
@@ -917,6 +943,149 @@
         }
       }
     },
+    "sessionSummary.breakdown.setIndex" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set %@"
+          }
+        }
+      }
+    },
+    "sessionSummary.breakdown.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breakdown"
+          }
+        }
+      }
+    },
+    "sessionSummary.finish" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finish"
+          }
+        }
+      }
+    },
+    "sessionSummary.legend.primary" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primary"
+          }
+        }
+      }
+    },
+    "sessionSummary.legend.secondary" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secondary"
+          }
+        }
+      }
+    },
+    "sessionSummary.newRecords.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New PRs"
+          }
+        }
+      }
+    },
+    "sessionSummary.stat.elapsed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elapsed"
+          }
+        }
+      }
+    },
+    "sessionSummary.stat.elapsed.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ elapsed"
+          }
+        }
+      }
+    },
+    "sessionSummary.stat.totalReps" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total reps"
+          }
+        }
+      }
+    },
+    "sessionSummary.stat.totalReps.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ total reps"
+          }
+        }
+      }
+    },
+    "sessionSummary.stat.totalVolume" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total weight"
+          }
+        }
+      }
+    },
+    "sessionSummary.stat.totalVolume.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ total weight"
+          }
+        }
+      }
+    },
+    "sessionSummary.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workout summary"
+          }
+        }
+      }
+    },
     "startWorkout.chooseWorkout.subtitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1170,17 +1339,6 @@
         }
       }
     },
-    "workoutLog.groupIntoSuperset" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Group into superset"
-          }
-        }
-      }
-    },
     "workoutLog.grouping.cancel" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1199,6 +1357,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Group"
+          }
+        }
+      }
+    },
+    "workoutLog.groupIntoSuperset" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group into superset"
           }
         }
       }
