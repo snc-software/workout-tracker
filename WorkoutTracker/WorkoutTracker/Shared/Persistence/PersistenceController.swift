@@ -11,7 +11,9 @@ enum PersistenceController {
         let schema = Schema([
             Exercise.self,
             Muscle.self,
-            ExerciseCategory.self
+            ExerciseCategory.self,
+            ScheduledWorkout.self,
+            ScheduledWorkoutExercise.self
         ])
         let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: inMemory)
 

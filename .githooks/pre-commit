@@ -1,7 +1,9 @@
 #!/bin/sh
 # Auto-formats staged Swift files with SwiftFormat before commit, using the
 # same config CI lints against (WorkoutTracker/.swiftformat), so a commit
-# can't drift from what `swiftformat --lint` will enforce in CI.
+# can't drift from what `swiftformat --lint` will enforce in CI. Then runs
+# SwiftLint (same config/flags as CI) so lint violations are caught locally
+# too, instead of only surfacing after a CI run.
 #
 # Enabled via `git config core.hooksPath .githooks` (see README/setup docs).
 
@@ -21,3 +23,10 @@ fi
 echo "$staged_swift_files" | tr '\n' '\0' | xargs -0 swiftformat --quiet
 
 echo "$staged_swift_files" | tr '\n' '\0' | xargs -0 git add
+
+if ! command -v swiftlint >/dev/null 2>&1; then
+    echo "warning: swiftlint not installed (brew install swiftlint) — skipping lint-on-commit" >&2
+    exit 0
+fi
+
+echo "$staged_swift_files" | tr '\n' '\0' | xargs -0 swiftlint lint --config WorkoutTracker/.swiftlint.yml --strict
