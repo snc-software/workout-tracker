@@ -25,6 +25,7 @@ struct RootView: View {
                 }
             } label: {
                 Label { Text("tab.dashboard") } icon: { Iconoir.homeSimple.asImage }
+                    .labelStyle(.iconOnly)
             }
             .accessibilityIdentifier("tab.dashboard")
 
@@ -34,6 +35,7 @@ struct RootView: View {
                 }
             } label: {
                 Label { Text("tab.schedule") } icon: { Iconoir.calendar.asImage }
+                    .labelStyle(.iconOnly)
             }
             .accessibilityIdentifier("tab.schedule")
 
@@ -43,6 +45,7 @@ struct RootView: View {
                 }
             } label: {
                 Label { Text("tab.exercises") } icon: { Iconoir.gym.asImage }
+                    .labelStyle(.iconOnly)
             }
             .accessibilityIdentifier("tab.exercises")
 
@@ -52,6 +55,7 @@ struct RootView: View {
                 }
             } label: {
                 Label { Text("tab.more") } icon: { Iconoir.menu.asImage }
+                    .labelStyle(.iconOnly)
             }
             .accessibilityIdentifier("tab.more")
         }
