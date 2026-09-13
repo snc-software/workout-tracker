@@ -41,7 +41,7 @@ struct ScheduleDayRow: View {
     private var content: some View {
         if let workout {
             VStack(alignment: .leading, spacing: 2) {
-                Text(displayTitle(for: workout))
+                Text(workout.displayTitle)
                     .font(Typography.body)
                     .fontWeight(.semibold)
                     .foregroundStyle(Color("textPrimary"))
@@ -81,12 +81,5 @@ struct ScheduleDayRow: View {
                     .strokeBorder(Color("border"), style: StrokeStyle(lineWidth: 1.5, dash: [4]))
             )
         }
-    }
-
-    private func displayTitle(for workout: ScheduledWorkout) -> String {
-        if let name = workout.name, !name.isEmpty {
-            return name
-        }
-        return workout.exercises.min(by: { $0.order < $1.order })?.exercise.name ?? ""
     }
 }

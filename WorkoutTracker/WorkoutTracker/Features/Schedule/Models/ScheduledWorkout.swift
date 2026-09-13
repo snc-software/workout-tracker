@@ -19,6 +19,15 @@ final class ScheduledWorkout {
         set { dayOfWeekRawValue = newValue.rawValue }
     }
 
+    /// `name` when set, otherwise the first exercise's name so an unnamed workout still reads as
+    /// itself rather than falling back to a generic label.
+    var displayTitle: String {
+        if let name, !name.isEmpty {
+            return name
+        }
+        return exercises.min(by: { $0.order < $1.order })?.exercise.name ?? ""
+    }
+
     init(
         id: UUID = UUID(),
         dayOfWeek: DayOfWeek,
