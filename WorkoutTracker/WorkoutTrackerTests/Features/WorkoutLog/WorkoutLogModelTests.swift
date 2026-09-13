@@ -215,6 +215,19 @@ struct WorkoutLogModelTests {
         #expect(logs.first?.exercises.first?.sets.first?.reps == 5)
     }
 
+    @Test func saveReturnsTheCreatedWorkoutLog() throws {
+        let context = ModelContext(PersistenceController.makeContainer(inMemory: true))
+        let model = WorkoutLogModel(source: .custom)
+        model.addExercise(benchPress)
+        model.entries[0].sets[0].weightKg = 60
+        model.entries[0].sets[0].reps = 5
+
+        let log = try model.save(context: context)
+
+        #expect(log.exercises.count == 1)
+        #expect(log.exercises.first?.exercise.name == "Bench Press")
+    }
+
     @Test func saveOnCustomSourceStoresANilName() throws {
         let context = ModelContext(PersistenceController.makeContainer(inMemory: true))
         let model = WorkoutLogModel(source: .custom)

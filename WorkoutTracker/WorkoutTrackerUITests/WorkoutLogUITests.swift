@@ -51,6 +51,10 @@ final class WorkoutLogUITests: XCTestCase {
 
         app.buttons["workoutLog.finish"].tap()
 
+        let summaryScreen = app.descendants(matching: .any)["screen.sessionSummary"]
+        XCTAssertTrue(summaryScreen.waitForExistence(timeout: waitTimeout))
+        app.buttons["sessionSummary.finish"].tap()
+
         let dashboardScreen = app.descendants(matching: .any)["screen.dashboard"]
         XCTAssertTrue(dashboardScreen.waitForExistence(timeout: waitTimeout))
     }
@@ -87,6 +91,10 @@ final class WorkoutLogUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Barbell Bench Press"].waitForExistence(timeout: waitTimeout))
 
         app.buttons["workoutLog.finish"].tap()
+
+        let summaryScreen = app.descendants(matching: .any)["screen.sessionSummary"]
+        XCTAssertTrue(summaryScreen.waitForExistence(timeout: waitTimeout))
+        app.buttons["sessionSummary.finish"].tap()
 
         let dashboardScreen = app.descendants(matching: .any)["screen.dashboard"]
         XCTAssertTrue(dashboardScreen.waitForExistence(timeout: waitTimeout))

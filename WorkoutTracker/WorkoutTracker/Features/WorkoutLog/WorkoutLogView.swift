@@ -14,6 +14,7 @@ struct WorkoutLogView: View {
 
     @State private var model: WorkoutLogModel
     @State private var isPresentingExercisePicker = false
+    @State private var summaryModel: SessionSummaryModel?
 
     init(source: WorkoutLogModel.Source) {
         _model = State(initialValue: WorkoutLogModel(source: source))
@@ -21,56 +22,70 @@ struct WorkoutLogView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                Section {
-                    elapsedTimeLabel
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
-                }
-
-                Section {
-                    ForEach(model.blocks) { block in
-                        WorkoutLogExerciseSection(block: block, model: model)
-                            .listRowSeparator(.hidden)
-                            .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
-                    }
-
-                    if !model.isSelectingForSuperset {
-                        addExerciseButton
-                    }
-
-                    groupingControl
-                }
-            }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
-            .background(Color("appBackground"))
-            .navigationTitle(model.name ?? String(localized: "workoutLog.custom.title"))
-            .navigationBarTitleDisplayMode(.inline)
-            .accessibilityIdentifier("screen.workoutLog")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button {
+            Group {
+                if let summaryModel {
+                    SessionSummaryView(model: summaryModel) {
                         dismiss()
-                    } label: {
-                        Iconoir.xmark.asImage
                     }
-                    .accessibilityLabel("workoutLog.cancel")
+                    .navigationBarTitleDisplayMode(.inline)
+                } else {
+                    loggingContent
+                }
+            }
+            .animation(.default, value: summaryModel == nil)
+        }
+    }
+
+    private var loggingContent: some View {
+        List {
+            Section {
+                elapsedTimeLabel
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+            }
+
+            Section {
+                ForEach(model.blocks) { block in
+                    WorkoutLogExerciseSection(block: block, model: model)
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
                 }
 
-                ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        save()
-                    } label: {
-                        Text("workoutLog.finish").font(Typography.body)
-                    }
-                    .disabled(!model.canSave || model.isSelectingForSuperset)
-                    .accessibilityIdentifier("workoutLog.finish")
+                if !model.isSelectingForSuperset {
+                    addExerciseButton
                 }
+
+                groupingControl
             }
-            .sheet(isPresented: $isPresentingExercisePicker) {
-                WorkoutLogExercisePickerView(model: model)
+        }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .background(Color("appBackground"))
+        .navigationTitle(model.name ?? String(localized: "workoutLog.custom.title"))
+        .navigationBarTitleDisplayMode(.inline)
+        .accessibilityIdentifier("screen.workoutLog")
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button {
+                    dismiss()
+                } label: {
+                    Iconoir.xmark.asImage
+                }
+                .accessibilityLabel("workoutLog.cancel")
             }
+
+            ToolbarItem(placement: .confirmationAction) {
+                Button {
+                    save()
+                } label: {
+                    Text("workoutLog.finish").font(Typography.body)
+                }
+                .disabled(!model.canSave || model.isSelectingForSuperset)
+                .accessibilityIdentifier("workoutLog.finish")
+            }
+        }
+        .sheet(isPresented: $isPresentingExercisePicker) {
+            WorkoutLogExercisePickerView(model: model)
         }
     }
 
@@ -150,11 +165,13 @@ struct WorkoutLogView: View {
 
     private func save() {
         do {
-            try model.save(context: modelContext)
-            dismiss()
+            let log = try model.save(context: modelContext)
+            let summary = SessionSummaryModel(workoutLog: log)
+            try summary.applyNewPersonalRecords(context: modelContext)
+            summaryModel = summary
         } catch {
-            // Save failure is logged inside WorkoutLogModel; the sheet stays open so the developer
-            // can retry rather than silently losing the entered data.
+            // Save failure is logged inside WorkoutLogModel/SessionSummaryModel; the logging screen stays
+            // open so the developer can retry rather than silently losing the entered data.
         }
     }
 }

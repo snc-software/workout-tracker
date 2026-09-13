@@ -71,7 +71,7 @@ struct DashboardView: View {
                 workoutLogSource = source
             }
         }
-        .sheet(item: $workoutLogSource) { source in
+        .fullScreenCover(item: $workoutLogSource) { source in
             WorkoutLogView(source: source)
         }
     }
