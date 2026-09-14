@@ -13,11 +13,19 @@ struct WorkoutLogView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var model: WorkoutLogModel
+    @State private var finishedAt: Date
     @State private var isPresentingExercisePicker = false
     @State private var summaryModel: SessionSummaryModel?
 
-    init(source: WorkoutLogModel.Source) {
-        _model = State(initialValue: WorkoutLogModel(source: source))
+    /// `true` when this session is being logged after the fact rather than live: swaps the elapsed-timer
+    /// for start/end date pickers, and `save()` uses the picked `finishedAt` instead of `Date()`.
+    let isHistorical: Bool
+
+    init(source: WorkoutLogModel.Source, performedAt: Date? = nil) {
+        let startedAt = performedAt ?? Date()
+        _model = State(initialValue: WorkoutLogModel(source: source, startedAt: startedAt))
+        _finishedAt = State(initialValue: startedAt)
+        isHistorical = performedAt != nil
     }
 
     var body: some View {
@@ -39,9 +47,15 @@ struct WorkoutLogView: View {
     private var loggingContent: some View {
         List {
             Section {
-                elapsedTimeLabel
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
+                if isHistorical {
+                    performedAtPickers
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                } else {
+                    elapsedTimeLabel
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                }
             }
 
             Section {
@@ -78,7 +92,7 @@ struct WorkoutLogView: View {
                 Button {
                     save()
                 } label: {
-                    Text("workoutLog.finish").font(Typography.body)
+                    Text(isHistorical ? "workoutLog.saveHistorical" : "workoutLog.finish").font(Typography.body)
                 }
                 .disabled(!model.canSave || model.isSelectingForSuperset)
                 .accessibilityIdentifier("workoutLog.finish")
@@ -87,6 +101,28 @@ struct WorkoutLogView: View {
         .sheet(isPresented: $isPresentingExercisePicker) {
             WorkoutLogExercisePickerView(model: model)
         }
+    }
+
+    private var performedAtPickers: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            DatePicker(
+                "workoutLog.performedAt.start.label",
+                selection: $model.startedAt,
+                in: ...min(finishedAt, Date()),
+                displayedComponents: [.date, .hourAndMinute]
+            )
+            .accessibilityIdentifier("workoutLog.performedAt.start")
+
+            DatePicker(
+                "workoutLog.performedAt.end.label",
+                selection: $finishedAt,
+                in: model.startedAt ... Date(),
+                displayedComponents: [.date, .hourAndMinute]
+            )
+            .accessibilityIdentifier("workoutLog.performedAt.end")
+        }
+        .font(Typography.caption)
+        .foregroundStyle(Color("textSecondary"))
     }
 
     private var elapsedTimeLabel: some View {
@@ -165,7 +201,7 @@ struct WorkoutLogView: View {
 
     private func save() {
         do {
-            let log = try model.save(context: modelContext)
+            let log = try model.save(context: modelContext, finishedAt: isHistorical ? finishedAt : Date())
             summaryModel = SessionSummaryModel(workoutLog: log)
         } catch {
             // Save failure is logged inside WorkoutLogModel; the logging screen stays open so the developer

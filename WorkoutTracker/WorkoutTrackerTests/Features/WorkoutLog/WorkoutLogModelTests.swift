@@ -254,4 +254,20 @@ struct WorkoutLogModelTests {
         #expect(logs.first?.startedAt == startedAt)
         #expect(logs.first?.finishedAt == finishedAt)
     }
+
+    @Test func mutatingStartedAtAfterInitChangesTheValueSavedAsStartedAt() throws {
+        let context = ModelContext(PersistenceController.makeContainer(inMemory: true))
+        let historicalDate = Date(timeIntervalSince1970: 5000)
+        let model = WorkoutLogModel(source: .custom)
+        model.addExercise(benchPress)
+
+        model.startedAt = historicalDate
+        #expect(model.startedAt == historicalDate)
+
+        try model.save(context: context, finishedAt: historicalDate)
+
+        let logs = try context.fetch(FetchDescriptor<WorkoutLog>())
+        #expect(logs.first?.startedAt == historicalDate)
+        #expect(logs.first?.finishedAt == historicalDate)
+    }
 }
