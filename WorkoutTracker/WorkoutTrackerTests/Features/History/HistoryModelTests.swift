@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import SwiftData
 import Testing
 @testable import WorkoutTracker
 
@@ -34,5 +35,18 @@ struct HistoryModelTests {
         let model = HistoryModel()
 
         #expect(model.completedWorkouts(from: []).isEmpty)
+    }
+
+    @Test func deleteWorkoutRemovesItFromTheContext() throws {
+        let context = ModelContext(PersistenceController.makeContainer(inMemory: true))
+        let model = HistoryModel()
+        let log = WorkoutLog(startedAt: .now, finishedAt: .now, name: "Bench Press")
+        context.insert(log)
+        try context.save()
+
+        try model.deleteWorkout(log, context: context)
+
+        let logs = try context.fetch(FetchDescriptor<WorkoutLog>())
+        #expect(logs.isEmpty)
     }
 }

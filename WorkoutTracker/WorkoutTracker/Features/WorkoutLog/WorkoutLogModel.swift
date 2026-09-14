@@ -40,7 +40,9 @@ final class WorkoutLogModel {
 
     let source: Source
     let name: String?
-    let startedAt: Date
+    /// Mutable so a historical entry's `WorkoutLogView` can bind a `DatePicker` to it; a live session
+    /// never mutates it after init.
+    var startedAt: Date
     var entries: [WorkoutLogExercise]
     var isSelectingForSuperset = false
     var selectedBlockIDs: [UUID] = []

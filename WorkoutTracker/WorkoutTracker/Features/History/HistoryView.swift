@@ -10,8 +10,11 @@ import SwiftUI
 /// Pushed from the Dashboard's "View History" button, onto that tab's existing `NavigationStack` — not
 /// presented as a sheet, so it gets the system back button for free.
 struct HistoryView: View {
+    @Environment(\.modelContext) private var modelContext
     @Query private var logs: [WorkoutLog]
     @State private var model = HistoryModel()
+    @State private var isPresentingAddWorkoutSource = false
+    @State private var addWorkoutSource: WorkoutLogModel.Source?
 
     var body: some View {
         let completed = model.completedWorkouts(from: logs)
@@ -41,6 +44,18 @@ struct HistoryView: View {
                     } label: {
                         HistoryRow(log: log)
                     }
+                    .swipeActions(edge: .trailing) {
+                        Button(role: .destructive) {
+                            deleteWorkout(log)
+                        } label: {
+                            Label {
+                                Text("history.delete")
+                            } icon: {
+                                Iconoir.trash.asImage
+                            }
+                        }
+                        .accessibilityIdentifier("history.row.delete")
+                    }
                 }
                 .listStyle(.plain)
                 .background(Color("appBackground"))
@@ -49,6 +64,29 @@ struct HistoryView: View {
         .navigationTitle("history.title")
         .navigationBarTitleDisplayMode(.inline)
         .accessibilityIdentifier("screen.history")
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    isPresentingAddWorkoutSource = true
+                } label: {
+                    Iconoir.plus.asImage
+                }
+                .accessibilityLabel("history.addWorkout.accessibilityLabel")
+                .accessibilityIdentifier("history.addWorkout")
+            }
+        }
+        .sheet(isPresented: $isPresentingAddWorkoutSource) {
+            HistoryAddWorkoutSourceView { source in
+                addWorkoutSource = source
+            }
+        }
+        .fullScreenCover(item: $addWorkoutSource) { source in
+            WorkoutLogView(source: source, performedAt: Date())
+        }
+    }
+
+    private func deleteWorkout(_ log: WorkoutLog) {
+        try? model.deleteWorkout(log, context: modelContext)
     }
 }
 

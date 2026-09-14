@@ -685,6 +685,94 @@
         }
       }
     },
+    "history.addWorkout.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add historical workout"
+          }
+        }
+      }
+    },
+    "history.addWorkout.chooseWorkout.subtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a day from your schedule"
+          }
+        }
+      }
+    },
+    "history.addWorkout.chooseWorkout.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Workout"
+          }
+        }
+      }
+    },
+    "history.addWorkout.close" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
+    },
+    "history.addWorkout.custom.subtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log a workout you already did"
+          }
+        }
+      }
+    },
+    "history.addWorkout.custom.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom"
+          }
+        }
+      }
+    },
+    "history.addWorkout.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Historical Workout"
+          }
+        }
+      }
+    },
+    "history.delete" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
+    },
     "history.empty.subtitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1840,6 +1928,28 @@
         }
       }
     },
+    "workoutLog.performedAt.end.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finished"
+          }
+        }
+      }
+    },
+    "workoutLog.performedAt.start.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Started"
+          }
+        }
+      }
+    },
     "workoutLog.picker.close" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1913,6 +2023,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add Exercise"
+          }
+        }
+      }
+    },
+    "workoutLog.saveHistorical" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
           }
         }
       }
