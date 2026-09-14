@@ -46,3 +46,22 @@ extension DashboardStats {
         consecutiveWeekStreak = streak
     }
 }
+
+extension Quote {
+    /// Wire → domain.
+    init(dto: ZenQuoteDTO) {
+        self.init(text: dto.text, author: dto.author)
+    }
+
+    /// Persistence → domain.
+    init(record: QuoteOfTheDayRecord) {
+        self.init(text: record.text, author: record.author)
+    }
+}
+
+extension QuoteOfTheDayRecord {
+    /// Domain → persistence, for first insert.
+    convenience init(domain: Quote, date: Date) {
+        self.init(date: date, text: domain.text, author: domain.author)
+    }
+}

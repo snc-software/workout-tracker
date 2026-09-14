@@ -106,4 +106,32 @@ struct DashboardMapperTests {
         #expect(stats.weightLiftedThisWeekKg == 0)
         #expect(stats.consecutiveWeekStreak == 0)
     }
+
+    @Test func quoteInitFromDTOMapsTextAndAuthor() {
+        let dto = ZenQuoteDTO(text: "Acknowledging the good that you already have.", author: "Eckhart Tolle")
+
+        let quote = Quote(dto: dto)
+
+        #expect(quote.text == "Acknowledging the good that you already have.")
+        #expect(quote.author == "Eckhart Tolle")
+    }
+
+    @Test func quoteInitFromRecordMapsTextAndAuthor() {
+        let record = QuoteOfTheDayRecord(date: referenceDate, text: "Stay hungry, stay foolish.", author: "Steve Jobs")
+
+        let quote = Quote(record: record)
+
+        #expect(quote.text == "Stay hungry, stay foolish.")
+        #expect(quote.author == "Steve Jobs")
+    }
+
+    @Test func quoteOfTheDayRecordInitFromDomainStoresTheGivenDate() {
+        let quote = Quote(text: "The only way to do great work is to love what you do.", author: "Steve Jobs")
+
+        let record = QuoteOfTheDayRecord(domain: quote, date: referenceDate)
+
+        #expect(record.text == quote.text)
+        #expect(record.author == quote.author)
+        #expect(record.date == referenceDate)
+    }
 }
