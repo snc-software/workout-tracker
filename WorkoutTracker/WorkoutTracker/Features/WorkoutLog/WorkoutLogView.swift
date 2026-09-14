@@ -21,11 +21,31 @@ struct WorkoutLogView: View {
     /// for start/end date pickers, and `save()` uses the picked `finishedAt` instead of `Date()`.
     let isHistorical: Bool
 
+    /// Non-`nil` only for a live session owned by an `ActiveWorkoutSession`: shows the minimise chevron
+    /// and, when tapped, hands control back to the session instead of dismissing this screen.
+    let onMinimize: (() -> Void)?
+    /// Called once the session genuinely ends (cancelled, or saved), so the owning `ActiveWorkoutSession`
+    /// can clear its model and stop showing the minimised pill.
+    let onEnd: (() -> Void)?
+
     init(source: WorkoutLogModel.Source, performedAt: Date? = nil) {
         let startedAt = performedAt ?? Date()
         _model = State(initialValue: WorkoutLogModel(source: source, startedAt: startedAt))
         _finishedAt = State(initialValue: startedAt)
         isHistorical = performedAt != nil
+        onMinimize = nil
+        onEnd = nil
+    }
+
+    /// Used for a live session whose `WorkoutLogModel` is owned by an `ActiveWorkoutSession` rather than
+    /// by this View, so the same model instance survives being minimised into the tab-bar pill and later
+    /// maximised back to this screen.
+    init(model: WorkoutLogModel, onMinimize: @escaping () -> Void, onEnd: @escaping () -> Void) {
+        _model = State(initialValue: model)
+        _finishedAt = State(initialValue: model.startedAt)
+        isHistorical = false
+        self.onMinimize = onMinimize
+        self.onEnd = onEnd
     }
 
     var body: some View {
@@ -33,6 +53,7 @@ struct WorkoutLogView: View {
             Group {
                 if let summaryModel {
                     SessionSummaryView(model: summaryModel) {
+                        onEnd?()
                         dismiss()
                     }
                     .navigationBarTitleDisplayMode(.inline)
@@ -79,8 +100,19 @@ struct WorkoutLogView: View {
         .navigationBarTitleDisplayMode(.inline)
         .accessibilityIdentifier("screen.workoutLog")
         .toolbar {
+            if let onMinimize {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: onMinimize) {
+                        Iconoir.navArrowDown.asImage
+                    }
+                    .accessibilityLabel("workoutLog.minimize")
+                    .accessibilityIdentifier("workoutLog.minimize")
+                }
+            }
+
             ToolbarItem(placement: .cancellationAction) {
                 Button {
+                    onEnd?()
                     dismiss()
                 } label: {
                     Iconoir.xmark.asImage

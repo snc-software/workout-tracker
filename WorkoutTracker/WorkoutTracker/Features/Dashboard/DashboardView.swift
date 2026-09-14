@@ -15,7 +15,7 @@ struct DashboardView: View {
     @State private var scheduleModel = ScheduleModel()
     @State private var dashboardModel = DashboardModel()
     @State private var isPresentingStartWorkout = false
-    @State private var workoutLogSource: WorkoutLogModel.Source?
+    @Environment(ActiveWorkoutSession.self) private var activeWorkoutSession
 
     var body: some View {
         ScrollView {
@@ -30,7 +30,7 @@ struct DashboardView: View {
 
                 if let todayWorkout = scheduleModel.workout(for: .today, in: scheduledWorkouts) {
                     UpcomingWorkoutCard(workout: todayWorkout) {
-                        workoutLogSource = .scheduled(todayWorkout)
+                        activeWorkoutSession.start(source: .scheduled(todayWorkout))
                     }
                 }
 
@@ -46,11 +46,8 @@ struct DashboardView: View {
         }
         .sheet(isPresented: $isPresentingStartWorkout) {
             StartWorkoutView { source in
-                workoutLogSource = source
+                activeWorkoutSession.start(source: source)
             }
-        }
-        .fullScreenCover(item: $workoutLogSource) { source in
-            WorkoutLogView(source: source)
         }
     }
 
@@ -102,4 +99,5 @@ struct DashboardView: View {
         DashboardView()
     }
     .modelContainer(container)
+    .environment(ActiveWorkoutSession())
 }

@@ -36,6 +36,17 @@
         }
       }
     },
+    "activeWorkoutPill.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ workout in progress"
+          }
+        }
+      }
+    },
     "dashboard.greeting.afternoon" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1957,6 +1968,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Group into superset"
+          }
+        }
+      }
+    },
+    "workoutLog.minimize" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimize workout"
           }
         }
       }
