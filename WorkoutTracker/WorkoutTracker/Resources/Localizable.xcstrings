@@ -1857,7 +1857,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Try a different search, or add this exercise from the Exercises tab."
+            "value" : "Try a different search, or quick create this exercise."
           }
         }
       }
@@ -1869,6 +1869,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No exercises found"
+          }
+        }
+      }
+    },
+    "workoutLog.picker.quickCreate.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick Create Exercise"
           }
         }
       }

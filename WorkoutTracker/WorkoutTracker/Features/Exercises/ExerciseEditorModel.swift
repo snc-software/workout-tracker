@@ -42,7 +42,9 @@ final class ExerciseEditorModel {
     private let wgerClient: any WgerExerciseSearching
 
     var canSave: Bool {
-        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        let hasName = !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        let hasValidMuscleSelection = secondaryMuscles.isEmpty || !primaryMuscles.isEmpty
+        return hasName && hasValidMuscleSelection
     }
 
     init(exercise: Exercise?, wgerClient: any WgerExerciseSearching = WgerClient()) {
@@ -104,16 +106,19 @@ final class ExerciseEditorModel {
         })
     }
 
-    func save(context: ModelContext) throws {
+    @discardableResult
+    func save(context: ModelContext) throws -> Exercise {
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let exercise: Exercise
 
         if let existingExercise {
             existingExercise.name = trimmedName
             existingExercise.category = category
             existingExercise.primaryMuscles = Array(primaryMuscles)
             existingExercise.secondaryMuscles = Array(secondaryMuscles)
+            exercise = existingExercise
         } else {
-            let exercise = Exercise(
+            exercise = Exercise(
                 name: trimmedName,
                 category: category,
                 primaryMuscles: Array(primaryMuscles),
@@ -128,5 +133,7 @@ final class ExerciseEditorModel {
             Self.logger.error("Failed to save exercise: \(error)")
             throw error
         }
+
+        return exercise
     }
 }
