@@ -7,6 +7,9 @@
     " · %@" : {
 
     },
+    "— %@" : {
+
+    },
     "%@ · ^[%lld rep](inflect: true)" : {
       "localizations" : {
         "en" : {
@@ -73,6 +76,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "View History"
+          }
+        }
+      }
+    },
+    "dashboard.quote.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quote of the day: %@, by %@"
           }
         }
       }

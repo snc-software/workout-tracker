@@ -8,6 +8,7 @@ import SwiftData
 import SwiftUI
 
 struct DashboardView: View {
+    @Environment(\.modelContext) private var modelContext
     @Query private var scheduledWorkouts: [ScheduledWorkout]
     @Query private var workoutLogs: [WorkoutLog]
     @State private var scheduleModel = ScheduleModel()
@@ -21,6 +22,7 @@ struct DashboardView: View {
             VStack(alignment: .leading, spacing: 16) {
                 DashboardHeaderView(greetingPeriod: dashboardModel.greetingPeriod(), date: .now)
                 DashboardStatsCard(stats: dashboardModel.stats(from: workoutLogs))
+                QuoteOfTheDayCard(state: dashboardModel.quoteOfTheDayState)
 
                 if let todayWorkout = scheduleModel.workout(for: .today, in: scheduledWorkouts) {
                     UpcomingWorkoutCard(workout: todayWorkout) {
@@ -35,6 +37,9 @@ struct DashboardView: View {
         }
         .background(Color("appBackground"))
         .accessibilityIdentifier("screen.dashboard")
+        .task {
+            await dashboardModel.loadQuoteOfTheDay(context: modelContext)
+        }
         .sheet(isPresented: $isPresentingRecords) {
             RecordsView()
         }
