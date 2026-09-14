@@ -5,9 +5,12 @@
 
 import Foundation
 import Iconoir
+import SwiftData
 import SwiftUI
 
 struct SessionSummaryView: View {
+    @Query private var profiles: [UserProfile]
+
     let model: SessionSummaryModel
     /// `nil` when this screen is reached by pushing from `HistoryView` — there, the system back button
     /// is the only way out, and a "Finish" action makes no sense for a workout that isn't being logged.
@@ -105,6 +108,7 @@ struct SessionSummaryView: View {
                 allMuscles: [],
                 primaryMuscles: summary.primaryMuscles,
                 secondaryMuscles: summary.secondaryMuscles,
+                gender: profiles.first?.muscleMapGenderRawValue ?? MuscleMapGenderOption.male.rawValue,
                 onMuscleTapped: nil
             )
             .frame(height: 220)
@@ -248,4 +252,5 @@ struct SessionSummaryView: View {
     ]
 
     return SessionSummaryView(model: SessionSummaryModel(workoutLog: log), onFinish: {})
+        .modelContainer(PersistenceController.makeContainer(inMemory: true))
 }

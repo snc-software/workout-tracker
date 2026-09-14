@@ -15,7 +15,12 @@ enum AppTab: Hashable {
 }
 
 struct RootView: View {
+    @Query private var profiles: [UserProfile]
     @State private var selectedTab: AppTab = .dashboard
+
+    private var theme: ThemePreference {
+        profiles.first?.theme ?? .system
+    }
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -60,6 +65,7 @@ struct RootView: View {
             .accessibilityIdentifier("tab.more")
         }
         .tint(Color("primaryBrand"))
+        .preferredColorScheme(theme.colorScheme)
     }
 }
 

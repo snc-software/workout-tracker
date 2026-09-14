@@ -17,6 +17,7 @@ struct WorkoutTrackerApp: App {
 
         let container = PersistenceController.makeContainer()
         ExerciseSeeder.seedIfNeeded(context: container.mainContext)
+        UserProfileSeeder.seedIfNeeded(context: container.mainContext)
         modelContainer = container
     }
 

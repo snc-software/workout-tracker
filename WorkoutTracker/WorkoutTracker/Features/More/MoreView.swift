@@ -4,33 +4,46 @@
 //
 
 import Iconoir
+import SwiftData
 import SwiftUI
 
 struct MoreView: View {
+    @Query private var profiles: [UserProfile]
+
     var body: some View {
-        VStack(spacing: 12) {
-            Iconoir.menu.asImage
-                .font(.system(size: 40))
-                .foregroundStyle(Color("textSecondary"))
-                .accessibilityHidden(true)
-            Text("more.title")
-                .font(Typography.h2)
-                .foregroundStyle(Color("textPrimary"))
-            Text("more.placeholder")
-                .font(Typography.body)
-                .foregroundStyle(Color("textSecondary"))
-                .multilineTextAlignment(.center)
+        List {
+            Section {
+                if let profile = profiles.first {
+                    NavigationLink {
+                        ProfileView(profile: profile)
+                    } label: {
+                        Text("more.profile.label").font(Typography.body)
+                    }
+                    .accessibilityIdentifier("more.profile.row")
+                }
+            } header: {
+                Label {
+                    Text("more.accountManagement.label").font(Typography.h5)
+                } icon: {
+                    Iconoir.profileCircle.asImage
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 15, height: 15)
+                }
+            }
         }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .listStyle(.plain)
         .background(Color("appBackground"))
-        .navigationTitle("more.title")
         .accessibilityIdentifier("screen.more")
     }
 }
 
 #Preview {
-    NavigationStack {
+    let container = PersistenceController.makeContainer(inMemory: true)
+    UserProfileSeeder.seedIfNeeded(context: container.mainContext)
+
+    return NavigationStack {
         MoreView()
     }
+    .modelContainer(container)
 }

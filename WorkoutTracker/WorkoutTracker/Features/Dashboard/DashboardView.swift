@@ -11,6 +11,7 @@ struct DashboardView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var scheduledWorkouts: [ScheduledWorkout]
     @Query private var workoutLogs: [WorkoutLog]
+    @Query private var profiles: [UserProfile]
     @State private var scheduleModel = ScheduleModel()
     @State private var dashboardModel = DashboardModel()
     @State private var isPresentingRecords = false
@@ -20,7 +21,11 @@ struct DashboardView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                DashboardHeaderView(greetingPeriod: dashboardModel.greetingPeriod(), date: .now)
+                DashboardHeaderView(
+                    greetingPeriod: dashboardModel.greetingPeriod(),
+                    date: .now,
+                    name: profiles.first?.name ?? ""
+                )
                 DashboardStatsCard(stats: dashboardModel.stats(from: workoutLogs))
                 QuoteOfTheDayCard(state: dashboardModel.quoteOfTheDayState)
 

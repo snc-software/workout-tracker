@@ -4,6 +4,7 @@
 //
 
 import Iconoir
+import SwiftData
 import SwiftUI
 
 /// Sheet content for adding/removing muscles in one selection group. Deals only in our own
@@ -16,6 +17,7 @@ import SwiftUI
 /// keyboard when embedded in this sheet's fixed (non-scrolling) layout.
 struct MuscleGroupPickerView: View {
     @Environment(\.dismiss) private var dismiss
+    @Query private var profiles: [UserProfile]
     @State private var searchText = ""
     @FocusState private var isSearchFieldFocused: Bool
 
@@ -33,6 +35,7 @@ struct MuscleGroupPickerView: View {
                         allMuscles: allMuscles,
                         primaryMuscles: Array(model.primaryMuscles),
                         secondaryMuscles: Array(model.secondaryMuscles),
+                        gender: profiles.first?.muscleMapGenderRawValue ?? MuscleMapGenderOption.male.rawValue,
                         onMuscleTapped: { muscle in
                             model.toggle(muscle, in: group)
                         }
