@@ -38,6 +38,38 @@ struct ExerciseEditorModelTests {
         #expect(model.canSave == true)
     }
 
+    @Test func canSaveIsFalseWhenSecondaryMusclesAreSelectedWithoutAnyPrimaryMuscle() {
+        let model = ExerciseEditorModel(exercise: nil)
+        model.name = "Barbell Bench Press"
+        model.toggle(triceps, in: .secondary)
+
+        #expect(model.canSave == false)
+    }
+
+    @Test func canSaveIsTrueWhenSecondaryMusclesAreSelectedAlongsideAPrimaryMuscle() {
+        let model = ExerciseEditorModel(exercise: nil)
+        model.name = "Barbell Bench Press"
+        model.toggle(chest, in: .primary)
+        model.toggle(triceps, in: .secondary)
+
+        #expect(model.canSave == true)
+    }
+
+    @Test func canSaveIsTrueWithOnlyAPrimaryMuscleSelected() {
+        let model = ExerciseEditorModel(exercise: nil)
+        model.name = "Barbell Bench Press"
+        model.toggle(chest, in: .primary)
+
+        #expect(model.canSave == true)
+    }
+
+    @Test func canSaveIsTrueWithNoMusclesSelectedAtAll() {
+        let model = ExerciseEditorModel(exercise: nil)
+        model.name = "Barbell Bench Press"
+
+        #expect(model.canSave == true)
+    }
+
     @Test func togglingAddsToThePrimaryGroup() {
         let model = ExerciseEditorModel(exercise: nil)
 
@@ -107,7 +139,7 @@ struct ExerciseEditorModelTests {
         model.toggle(chest, in: .primary)
         model.toggle(triceps, in: .secondary)
 
-        try model.save(context: context)
+        let saved = try model.save(context: context)
 
         let inserted = try context.fetch(FetchDescriptor<Exercise>())
         #expect(inserted.count == 1)
@@ -115,6 +147,7 @@ struct ExerciseEditorModelTests {
         #expect(inserted.first?.category === chestCategory)
         #expect(inserted.first?.primaryMuscles.map(\.name) == ["chest"])
         #expect(inserted.first?.secondaryMuscles.map(\.name) == ["triceps"])
+        #expect(saved === inserted.first)
     }
 
     @Test func searchWgerSetsLoadedStateWithMappedMatchesOnSuccess() async {
@@ -217,12 +250,13 @@ struct ExerciseEditorModelTests {
         model.category = chestCategory
         model.toggle(chest, in: .primary)
 
-        try model.save(context: context)
+        let saved = try model.save(context: context)
 
         let all = try context.fetch(FetchDescriptor<Exercise>())
         #expect(all.count == 1)
         #expect(all.first?.name == "Barbell Bench Press")
         #expect(all.first?.category === chestCategory)
         #expect(all.first?.primaryMuscles.map(\.name) == ["chest"])
+        #expect(saved === exercise)
     }
 }

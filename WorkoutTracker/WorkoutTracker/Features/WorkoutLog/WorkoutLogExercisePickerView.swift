@@ -13,6 +13,7 @@ struct WorkoutLogExercisePickerView: View {
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \Exercise.name) private var allExercises: [Exercise]
     @State private var searchText = ""
+    @State private var isPresentingQuickCreate = false
     @FocusState private var isSearchFieldFocused: Bool
 
     let model: WorkoutLogModel
@@ -40,7 +41,23 @@ struct WorkoutLogExercisePickerView: View {
                     }
                     .accessibilityLabel("workoutLog.picker.close")
                 }
+
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        isPresentingQuickCreate = true
+                    } label: {
+                        Iconoir.plus.asImage
+                    }
+                    .accessibilityIdentifier("workoutLog.picker.quickCreate")
+                    .accessibilityLabel("workoutLog.picker.quickCreate.label")
+                }
             }
+        }
+        .sheet(isPresented: $isPresentingQuickCreate) {
+            ExerciseEditorView(onSave: { exercise in
+                model.addExercise(exercise)
+                dismiss()
+            })
         }
     }
 

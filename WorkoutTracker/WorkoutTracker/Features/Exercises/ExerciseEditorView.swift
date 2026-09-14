@@ -20,10 +20,12 @@ struct ExerciseEditorView: View {
     @State private var isWgerSearchPresented = false
 
     private let isEditing: Bool
+    private let onSave: ((Exercise) -> Void)?
 
-    init(exercise: Exercise? = nil) {
+    init(exercise: Exercise? = nil, onSave: ((Exercise) -> Void)? = nil) {
         isEditing = exercise != nil
         _model = State(initialValue: ExerciseEditorModel(exercise: exercise))
+        self.onSave = onSave
     }
 
     var body: some View {
@@ -187,8 +189,16 @@ struct ExerciseEditorView: View {
 
     private func save() {
         do {
-            try model.save(context: modelContext)
-            dismiss()
+            let exercise = try model.save(context: modelContext)
+            if let onSave {
+                // The caller owns dismissal here: when this editor is presented from another
+                // sheet, calling our own `dismiss()` first and letting the caller dismiss
+                // afterward animates as two separate steps. Leaving dismissal entirely to the
+                // caller lets a single dismiss of the presenting sheet take this one down with it.
+                onSave(exercise)
+            } else {
+                dismiss()
+            }
         } catch {
             // Save failure is logged inside ExerciseEditorModel; the sheet stays open so the
             // developer can retry rather than silently losing the entered data.

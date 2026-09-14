@@ -60,6 +60,40 @@ final class WorkoutLogUITests: XCTestCase {
     }
 
     @MainActor
+    func testQuickCreatingAnExerciseDuringAWorkoutAddsItToTheLog() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let startWorkoutButton = app.buttons["dashboard.startWorkoutButton"]
+        XCTAssertTrue(startWorkoutButton.waitForExistence(timeout: waitTimeout))
+        startWorkoutButton.tap()
+
+        let customOption = app.descendants(matching: .any)["startWorkout.custom"]
+        XCTAssertTrue(customOption.waitForExistence(timeout: waitTimeout))
+        customOption.tap()
+
+        let logScreen = app.descendants(matching: .any)["screen.workoutLog"]
+        XCTAssertTrue(logScreen.waitForExistence(timeout: waitTimeout))
+
+        app.buttons["workoutLog.addExercise"].tap()
+
+        let quickCreateButton = app.buttons["workoutLog.picker.quickCreate"]
+        XCTAssertTrue(quickCreateButton.waitForExistence(timeout: waitTimeout))
+        quickCreateButton.tap()
+
+        let nameField = app.descendants(matching: .any)["exercises.editor.name.field"]
+        XCTAssertTrue(nameField.waitForExistence(timeout: waitTimeout))
+        nameField.tap()
+        nameField.typeText("Cable Face Pull")
+
+        app.buttons["exercises.editor.save"].tap()
+
+        XCTAssertTrue(app.staticTexts["Cable Face Pull"].waitForExistence(timeout: waitTimeout))
+        XCTAssertFalse(nameField.exists)
+        XCTAssertFalse(app.descendants(matching: .any)["workoutLog.picker.search.field"].exists)
+    }
+
+    @MainActor
     func testStartingTodaysScheduledWorkoutFromTheDashboardShortcutLoadsItIntoTheLoggingScreen() {
         let app = XCUIApplication()
         app.launch()
