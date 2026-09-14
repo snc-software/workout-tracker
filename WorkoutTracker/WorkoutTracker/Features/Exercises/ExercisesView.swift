@@ -8,6 +8,7 @@ import SwiftData
 import SwiftUI
 
 struct ExercisesView: View {
+    @Environment(\.modelContext) private var modelContext
     @Query(sort: \Exercise.name) private var exercises: [Exercise]
     @Query(sort: \ExerciseCategory.name) private var categories: [ExerciseCategory]
     @State private var model = ExercisesModel()
@@ -52,6 +53,18 @@ struct ExercisesView: View {
                             ExerciseRow(exercise: exercise)
                         }
                         .buttonStyle(.plain)
+                        .swipeActions {
+                            Button(role: .destructive) {
+                                deleteExercise(exercise)
+                            } label: {
+                                Label {
+                                    Text("exercises.delete")
+                                } icon: {
+                                    Iconoir.trash.asImage
+                                }
+                            }
+                            .accessibilityIdentifier("exercises.row.delete")
+                        }
                     }
                     .listStyle(.plain)
                     .background(Color("appBackground"))
@@ -78,6 +91,10 @@ struct ExercisesView: View {
         .sheet(item: $editingExercise) { exercise in
             ExerciseEditorView(exercise: exercise)
         }
+    }
+
+    private func deleteExercise(_ exercise: Exercise) {
+        try? model.deleteExercise(exercise, context: modelContext)
     }
 }
 

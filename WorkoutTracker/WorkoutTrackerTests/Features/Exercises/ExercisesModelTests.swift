@@ -3,6 +3,7 @@
 //  WorkoutTrackerTests
 //
 
+import SwiftData
 import Testing
 @testable import WorkoutTracker
 
@@ -66,5 +67,18 @@ struct ExercisesModelTests {
         model.selectedCategory = nil
 
         #expect(model.filteredExercises(from: exercises).count == exercises.count)
+    }
+
+    @Test func deleteExerciseRemovesItFromTheContext() throws {
+        let context = ModelContext(PersistenceController.makeContainer(inMemory: true))
+        let exercise = Exercise(name: "Barbell Deadlift")
+        context.insert(exercise)
+        try context.save()
+        let model = ExercisesModel()
+
+        try model.deleteExercise(exercise, context: context)
+
+        let remaining = try context.fetch(FetchDescriptor<Exercise>())
+        #expect(remaining.isEmpty)
     }
 }
