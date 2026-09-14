@@ -971,6 +971,17 @@
         }
       }
     },
+    "records.achievedAt.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Achieved %@"
+          }
+        }
+      }
+    },
     "records.addButton.label" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -993,13 +1004,46 @@
         }
       }
     },
-    "records.close" : {
+    "records.delete" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Close"
+            "value" : "Delete"
+          }
+        }
+      }
+    },
+    "records.detail.achieved.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Achieved"
+          }
+        }
+      }
+    },
+    "records.detail.edit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        }
+      }
+    },
+    "records.detail.record.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personal Record"
           }
         }
       }
@@ -1044,17 +1088,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exercise"
-          }
-        }
-      }
-    },
-    "records.editor.remove" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remove record"
           }
         }
       }

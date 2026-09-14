@@ -26,6 +26,7 @@ struct WorkoutLogModelPersonalRecordTests {
         #expect(records.count == 1)
         #expect(records.first?.weightKg == 60)
         #expect(records.first?.achievedAt == finishedAt)
+        #expect(records.first?.achievedInWorkout?.id == log.id)
         #expect(log.exercises.first?.personalRecordWeightKg == 60)
     }
 
@@ -50,6 +51,7 @@ struct WorkoutLogModelPersonalRecordTests {
         #expect(records.count == 1)
         #expect(records.first?.weightKg == 90)
         #expect(records.first?.achievedAt == finishedAt)
+        #expect(records.first?.achievedInWorkout?.id == log.id)
         #expect(log.exercises.first?.personalRecordWeightKg == 90)
     }
 
@@ -69,6 +71,7 @@ struct WorkoutLogModelPersonalRecordTests {
         #expect(records.count == 1)
         #expect(records.first?.weightKg == 100)
         #expect(records.first?.achievedAt == achievedAt)
+        #expect(records.first?.achievedInWorkout == nil)
         #expect(log.exercises.first?.personalRecordWeightKg == nil)
     }
 

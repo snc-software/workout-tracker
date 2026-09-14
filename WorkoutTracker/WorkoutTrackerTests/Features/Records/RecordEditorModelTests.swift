@@ -78,18 +78,26 @@ struct RecordEditorModelTests {
         #expect(all.first?.achievedAt != Date(timeIntervalSince1970: 0))
     }
 
-    @Test func removeRecordDeletesTheExistingRecord() throws {
+    @Test func saveOnModelInitializedFromExistingRecordWithASessionLinkClearsTheLink() throws {
         let context = ModelContext(PersistenceController.makeContainer(inMemory: true))
         let exercise = Exercise(name: "Bench Press")
-        let record = PersonalRecord(exercise: exercise, weightKg: 80)
+        let workoutLog = WorkoutLog(
+            startedAt: Date(timeIntervalSince1970: 0),
+            finishedAt: Date(timeIntervalSince1970: 0)
+        )
+        let record = PersonalRecord(exercise: exercise, weightKg: 80, achievedInWorkout: workoutLog)
         context.insert(exercise)
+        context.insert(workoutLog)
         context.insert(record)
         try context.save()
 
         let model = RecordEditorModel(exercise: exercise, record: record)
-        try model.removeRecord(context: context)
+        model.weightKg = 85
+
+        try model.save(context: context)
 
         let all = try context.fetch(FetchDescriptor<PersonalRecord>())
-        #expect(all.isEmpty)
+        #expect(all.count == 1)
+        #expect(all.first?.achievedInWorkout == nil)
     }
 }

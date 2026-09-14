@@ -16,6 +16,10 @@ final class WorkoutLog {
     var name: String?
     @Relationship(deleteRule: .cascade, inverse: \WorkoutLogExercise.workoutLog)
     var exercises: [WorkoutLogExercise]
+    /// Records set during this session. `.nullify` on delete: removing a log shouldn't delete the
+    /// personal records it produced, only unlink them.
+    @Relationship(deleteRule: .nullify, inverse: \PersonalRecord.achievedInWorkout)
+    var personalRecords: [PersonalRecord] = []
 
     /// `name` when set, otherwise the first exercise's name so a custom-started log (which has no
     /// `name`) still reads as itself rather than falling back to a generic label.
