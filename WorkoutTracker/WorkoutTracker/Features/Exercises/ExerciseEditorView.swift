@@ -12,9 +12,11 @@ struct ExerciseEditorView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \Muscle.name) private var allMuscles: [Muscle]
+    @Query(sort: \ExerciseCategory.name) private var categories: [ExerciseCategory]
 
     @State private var model: ExerciseEditorModel
     @State private var pickerGroup: ExerciseEditorModel.MuscleSelectionGroup?
+    @State private var isWgerSearchPresented = false
 
     private let isEditing: Bool
 
@@ -31,8 +33,39 @@ struct ExerciseEditorView: View {
                         .font(Typography.body)
                         .accessibilityLabel("exercises.editor.name.label")
                         .accessibilityIdentifier("exercises.editor.name.field")
+
+                    if !isEditing {
+                        Button {
+                            isWgerSearchPresented = true
+                        } label: {
+                            Label {
+                                Text("exercises.editor.wger.entry")
+                                    .font(Typography.body)
+                            } icon: {
+                                Iconoir.globe.asImage
+                            }
+                        }
+                        .accessibilityIdentifier("exercises.editor.wger.entry")
+                    }
                 } header: {
                     sectionHeader("exercises.editor.name.label")
+                }
+
+                Section {
+                    Picker(selection: $model.category) {
+                        Text("exercises.editor.category.none")
+                            .tag(ExerciseCategory?.none)
+                        ForEach(categories) { category in
+                            Text(category.name)
+                                .tag(ExerciseCategory?.some(category))
+                        }
+                    } label: {
+                        Text("exercises.editor.category.label")
+                            .font(Typography.body)
+                    }
+                    .accessibilityIdentifier("exercises.editor.category.picker")
+                } header: {
+                    sectionHeader("exercises.editor.category.label")
                 }
 
                 Section {
@@ -92,6 +125,9 @@ struct ExerciseEditorView: View {
             }
             .sheet(item: $pickerGroup) { group in
                 MuscleGroupPickerView(group: group, model: model, allMuscles: allMuscles)
+            }
+            .sheet(isPresented: $isWgerSearchPresented) {
+                WgerExerciseSearchView(model: model, allMuscles: allMuscles, allCategories: categories)
             }
         }
     }
