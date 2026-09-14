@@ -18,7 +18,8 @@ enum PersistenceController {
             WorkoutLog.self,
             WorkoutLogExercise.self,
             WorkoutSetLog.self,
-            QuoteOfTheDayRecord.self
+            QuoteOfTheDayRecord.self,
+            UserProfile.self
         ])
         let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: inMemory)
 

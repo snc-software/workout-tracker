@@ -16,6 +16,9 @@ struct MuscleMapPicker: View {
     let allMuscles: [Muscle]
     let primaryMuscles: [Muscle]
     let secondaryMuscles: [Muscle]
+    /// A `MuscleMap.BodyGender` rawValue (e.g. `"male"`, `"female"`), matching how `Muscle.name`
+    /// matches `MuscleMap.Muscle` — the caller's stored profile preference passes straight through.
+    var gender: String = MuscleMapGenderOption.male.rawValue
     var onMuscleTapped: ((Muscle) -> Void)?
 
     var body: some View {
@@ -26,7 +29,8 @@ struct MuscleMapPicker: View {
     }
 
     private func bodyView(side: BodySide) -> some View {
-        var view = MuscleMap.BodyView(gender: .male, side: side)
+        let bodyGender = MuscleMap.BodyGender(rawValue: gender) ?? .male
+        var view = MuscleMap.BodyView(gender: bodyGender, side: side)
             .highlight(primaryRegions, color: Color("primaryBrand"))
             .highlight(secondaryRegions, color: Color("accent"))
 

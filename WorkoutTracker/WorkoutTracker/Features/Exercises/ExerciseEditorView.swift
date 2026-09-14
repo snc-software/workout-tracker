@@ -13,6 +13,7 @@ struct ExerciseEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \Muscle.name) private var allMuscles: [Muscle]
     @Query(sort: \ExerciseCategory.name) private var categories: [ExerciseCategory]
+    @Query private var profiles: [UserProfile]
 
     @State private var model: ExerciseEditorModel
     @State private var pickerGroup: ExerciseEditorModel.MuscleSelectionGroup?
@@ -73,6 +74,7 @@ struct ExerciseEditorView: View {
                         allMuscles: allMuscles,
                         primaryMuscles: Array(model.primaryMuscles),
                         secondaryMuscles: Array(model.secondaryMuscles),
+                        gender: profiles.first?.muscleMapGenderRawValue ?? MuscleMapGenderOption.male.rawValue,
                         onMuscleTapped: nil
                     )
                     .frame(height: 220)
