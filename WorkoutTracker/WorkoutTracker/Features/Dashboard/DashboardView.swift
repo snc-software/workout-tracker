@@ -14,7 +14,6 @@ struct DashboardView: View {
     @Query private var profiles: [UserProfile]
     @State private var scheduleModel = ScheduleModel()
     @State private var dashboardModel = DashboardModel()
-    @State private var isPresentingRecords = false
     @State private var isPresentingStartWorkout = false
     @State private var workoutLogSource: WorkoutLogModel.Source?
 
@@ -45,9 +44,6 @@ struct DashboardView: View {
         .task {
             await dashboardModel.loadQuoteOfTheDay(context: modelContext)
         }
-        .sheet(isPresented: $isPresentingRecords) {
-            RecordsView()
-        }
         .sheet(isPresented: $isPresentingStartWorkout) {
             StartWorkoutView { source in
                 workoutLogSource = source
@@ -68,8 +64,8 @@ struct DashboardView: View {
             .buttonStyle(.plain)
             .accessibilityIdentifier("dashboard.historyButton")
 
-            Button {
-                isPresentingRecords = true
+            NavigationLink {
+                RecordsView()
             } label: {
                 QuickNavCard(icon: .trophy, label: "dashboard.recordsButton.label")
             }

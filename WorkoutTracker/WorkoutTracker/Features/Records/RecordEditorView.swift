@@ -38,21 +38,6 @@ struct RecordEditorView: View {
                 } header: {
                     sectionHeader("records.editor.weight.label")
                 }
-
-                if model.isEditing {
-                    Section {
-                        Button(role: .destructive) {
-                            remove()
-                        } label: {
-                            Label {
-                                Text("records.editor.remove")
-                            } icon: {
-                                Iconoir.trash.asImage
-                            }
-                        }
-                        .accessibilityIdentifier("records.editor.remove")
-                    }
-                }
             }
             .navigationTitle(model.isEditing ? "records.editor.edit.title" : "records.editor.add.title")
             .navigationBarTitleDisplayMode(.inline)
@@ -92,16 +77,6 @@ struct RecordEditorView: View {
         } catch {
             // Save failure is logged inside RecordEditorModel; the sheet stays open so the
             // developer can retry rather than silently losing the entered data.
-        }
-    }
-
-    private func remove() {
-        do {
-            try model.removeRecord(context: modelContext)
-            dismiss()
-        } catch {
-            // Removal failure is logged inside RecordEditorModel; the sheet stays open so the
-            // developer can retry.
         }
     }
 }

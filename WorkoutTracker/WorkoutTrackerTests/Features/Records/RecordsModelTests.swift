@@ -3,6 +3,8 @@
 //  WorkoutTrackerTests
 //
 
+import Foundation
+import SwiftData
 import Testing
 @testable import WorkoutTracker
 
@@ -23,5 +25,18 @@ struct RecordsModelTests {
         let model = RecordsModel()
 
         #expect(model.sortedRecords(from: []).isEmpty)
+    }
+
+    @Test func deleteRecordRemovesItFromTheContext() throws {
+        let context = ModelContext(PersistenceController.makeContainer(inMemory: true))
+        let model = RecordsModel()
+        let record = PersonalRecord(exercise: Exercise(name: "Bench Press"), weightKg: 82.5)
+        context.insert(record)
+        try context.save()
+
+        try model.deleteRecord(record, context: context)
+
+        let all = try context.fetch(FetchDescriptor<PersonalRecord>())
+        #expect(all.isEmpty)
     }
 }

@@ -34,6 +34,7 @@ final class RecordEditorModel {
         if let existingRecord {
             existingRecord.weightKg = weightKg
             existingRecord.achievedAt = Date()
+            existingRecord.achievedInWorkout = nil
         } else {
             let record = PersonalRecord(exercise: exercise, weightKg: weightKg)
             context.insert(record)
@@ -43,18 +44,6 @@ final class RecordEditorModel {
             try context.save()
         } catch {
             Self.logger.error("Failed to save personal record: \(error)")
-            throw error
-        }
-    }
-
-    func removeRecord(context: ModelContext) throws {
-        guard let existingRecord else { return }
-        context.delete(existingRecord)
-
-        do {
-            try context.save()
-        } catch {
-            Self.logger.error("Failed to remove personal record: \(error)")
             throw error
         }
     }
