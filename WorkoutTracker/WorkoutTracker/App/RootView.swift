@@ -17,6 +17,7 @@ enum AppTab: Hashable {
 struct RootView: View {
     @Query private var profiles: [UserProfile]
     @State private var selectedTab: AppTab = .dashboard
+    @State private var activeWorkoutSession = ActiveWorkoutSession()
 
     private var theme: ThemePreference {
         profiles.first?.theme ?? .system
@@ -64,8 +65,32 @@ struct RootView: View {
             }
             .accessibilityIdentifier("tab.more")
         }
+        .tabViewBottomAccessory(isEnabled: activeWorkoutSession.isMinimizedPillVisible) {
+            if let model = activeWorkoutSession.model {
+                ActiveWorkoutPillView(model: model) {
+                    activeWorkoutSession.maximize()
+                }
+            }
+        }
         .tint(Color("primaryBrand"))
         .preferredColorScheme(theme.colorScheme)
+        .environment(activeWorkoutSession)
+        .fullScreenCover(isPresented: Binding(
+            get: { activeWorkoutSession.isExpanded },
+            set: { isPresented in
+                if !isPresented {
+                    activeWorkoutSession.minimize()
+                }
+            }
+        )) {
+            if let model = activeWorkoutSession.model {
+                WorkoutLogView(
+                    model: model,
+                    onMinimize: { activeWorkoutSession.minimize() },
+                    onEnd: { activeWorkoutSession.end() }
+                )
+            }
+        }
     }
 }
 

@@ -94,6 +94,54 @@ final class WorkoutLogUITests: XCTestCase {
     }
 
     @MainActor
+    func testMinimizingAnActiveWorkoutShowsPillAcrossTabsAndMaximizingRestoresProgress() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let startWorkoutButton = app.buttons["dashboard.startWorkoutButton"]
+        XCTAssertTrue(startWorkoutButton.waitForExistence(timeout: waitTimeout))
+        startWorkoutButton.tap()
+
+        let customOption = app.descendants(matching: .any)["startWorkout.custom"]
+        XCTAssertTrue(customOption.waitForExistence(timeout: waitTimeout))
+        customOption.tap()
+
+        let logScreen = app.descendants(matching: .any)["screen.workoutLog"]
+        XCTAssertTrue(logScreen.waitForExistence(timeout: waitTimeout))
+
+        app.buttons["workoutLog.addExercise"].tap()
+
+        let resultRow = app.descendants(matching: .any)["workoutLog.picker.result.Barbell Bench Press"]
+        XCTAssertTrue(resultRow.waitForExistence(timeout: waitTimeout))
+        resultRow.tap()
+
+        let weightField = app.textFields["Weight in kilograms"]
+        XCTAssertTrue(weightField.waitForExistence(timeout: waitTimeout))
+        weightField.tap()
+        weightField.typeText("60")
+
+        let repsField = app.textFields["Reps"]
+        XCTAssertTrue(repsField.waitForExistence(timeout: waitTimeout))
+        repsField.tap()
+        repsField.typeText("5")
+
+        app.buttons["workoutLog.minimize"].tap()
+
+        let pill = app.descendants(matching: .any)["activeWorkoutPill"]
+        XCTAssertTrue(pill.waitForExistence(timeout: waitTimeout))
+        XCTAssertFalse(logScreen.exists)
+
+        app.tabBars.buttons["Exercises"].tap()
+        XCTAssertTrue(pill.waitForExistence(timeout: waitTimeout))
+
+        pill.tap()
+
+        XCTAssertTrue(logScreen.waitForExistence(timeout: waitTimeout))
+        XCTAssertEqual(weightField.value as? String, "60")
+        XCTAssertEqual(repsField.value as? String, "5")
+    }
+
+    @MainActor
     func testStartingTodaysScheduledWorkoutFromTheDashboardShortcutLoadsItIntoTheLoggingScreen() {
         let app = XCUIApplication()
         app.launch()

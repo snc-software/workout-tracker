@@ -25,6 +25,10 @@ enum Typography {
     /// Small uppercase eyebrow labels (e.g. "THIS WEEK") — caption2's size in the heading face.
     static let overline = Font.custom("JetBrainsMono-SemiBold", size: 11, relativeTo: .caption2)
 
+    /// Numeric displays like an elapsed-time counter — body's size in the heading (monospace) face, so
+    /// digits read as prominently as a heading without the extra size jump a full heading token would add.
+    static let bodyMono = Font.custom("JetBrainsMono-SemiBold", size: 15, relativeTo: .callout)
+
     /// `.navigationTitle` has no font modifier of its own, so the heading font is applied via
     /// `UINavigationBarAppearance` once at launch rather than per-screen.
     static func configureNavigationBarAppearance() {
