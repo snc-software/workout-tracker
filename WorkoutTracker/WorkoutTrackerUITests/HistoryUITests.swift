@@ -107,6 +107,59 @@ final class HistoryUITests: XCTestCase {
         XCTAssertEqual(rows.count, rowCountBefore - 1)
     }
 
+    @MainActor
+    func testEditingAHistoricalWorkoutUpdatesTotalsAndCancelDiscardsChanges() {
+        let app = XCUIApplication()
+        app.launch()
+
+        finishALiveCustomWorkoutAndOpenHistory(app)
+
+        let historyScreen = app.descendants(matching: .any)["screen.history"]
+        // Other tests in this suite may have already left rows in the persisted store (there's no
+        // per-test store reset), so this asserts the row count is unchanged by editing, not that it's 1.
+        let rows = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'history.row.'"))
+        let rowCountBefore = rows.count
+        let historyRow = rows.firstMatch
+        XCTAssertTrue(historyRow.waitForExistence(timeout: waitTimeout))
+        historyRow.tap()
+
+        let summaryScreen = app.descendants(matching: .any)["screen.sessionSummary"]
+        let totalRepsTile = app.descendants(matching: .any)["sessionSummary.stat.totalReps"]
+        XCTAssertTrue(summaryScreen.waitForExistence(timeout: waitTimeout))
+        XCTAssertTrue(totalRepsTile.waitForExistence(timeout: waitTimeout))
+        XCTAssertEqual(totalRepsTile.label, "5 total reps")
+
+        // Cancelling out of the editor must leave the workout exactly as it was.
+        app.buttons["history.detail.edit"].tap()
+        let logScreen = app.descendants(matching: .any)["screen.workoutLog"]
+        XCTAssertTrue(logScreen.waitForExistence(timeout: waitTimeout))
+        XCTAssertTrue(app.descendants(matching: .any)["workoutLog.performedAt.start"]
+            .waitForExistence(timeout: waitTimeout))
+        XCTAssertTrue(app.descendants(matching: .any)["workoutLog.performedAt.end"]
+            .waitForExistence(timeout: waitTimeout))
+        XCTAssertEqual(app.textFields["Weight in kilograms"].value as? String, "60")
+        XCTAssertEqual(app.textFields["Reps"].value as? String, "5")
+
+        app.buttons["Cancel"].tap()
+        XCTAssertTrue(summaryScreen.waitForExistence(timeout: waitTimeout))
+        XCTAssertEqual(totalRepsTile.label, "5 total reps")
+
+        // Editing again and saving a new set must update the same workout's totals, not create a duplicate,
+        // and saving returns straight to this same history detail screen rather than stacking another
+        // summary on top of it.
+        app.buttons["history.detail.edit"].tap()
+        XCTAssertTrue(logScreen.waitForExistence(timeout: waitTimeout))
+        app.buttons["workoutLog.exercise.Barbell Bench Press.addSet"].tap()
+        app.buttons["workoutLog.finish"].tap()
+
+        XCTAssertTrue(summaryScreen.waitForExistence(timeout: waitTimeout))
+        XCTAssertEqual(totalRepsTile.label, "10 total reps")
+
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(historyScreen.waitForExistence(timeout: waitTimeout))
+        XCTAssertEqual(rows.count, rowCountBefore)
+    }
+
     /// Starts a blank live workout from the Dashboard, logs one set of Bench Press, finishes it, then
     /// opens History from the Dashboard so the caller lands on `screen.history` with exactly one row.
     @MainActor

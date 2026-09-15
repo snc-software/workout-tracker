@@ -11,8 +11,23 @@ import SwiftUI
 struct HistoryDetailView: View {
     let log: WorkoutLog
 
+    @State private var isPresentingEditor = false
+
     var body: some View {
         SessionSummaryView(model: SessionSummaryModel(workoutLog: log), onFinish: nil)
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isPresentingEditor = true
+                    } label: {
+                        Text("history.detail.edit").font(Typography.body)
+                    }
+                    .accessibilityIdentifier("history.detail.edit")
+                }
+            }
+            .fullScreenCover(isPresented: $isPresentingEditor) {
+                WorkoutLogView(editing: log)
+            }
     }
 }

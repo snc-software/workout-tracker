@@ -784,6 +784,17 @@
         }
       }
     },
+    "history.detail.edit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        }
+      }
+    },
     "history.empty.subtitle" : {
       "extractionState" : "manual",
       "localizations" : {

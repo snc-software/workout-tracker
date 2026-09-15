@@ -28,6 +28,10 @@ struct WorkoutLogView: View {
     /// can clear its model and stop showing the minimised pill.
     let onEnd: (() -> Void)?
 
+    /// `true` only for `init(editing:)`: saving returns straight to the caller (the history detail
+    /// screen already shows the up-to-date summary) instead of showing a summary screen on top of it.
+    private let isEditingExisting: Bool
+
     init(source: WorkoutLogModel.Source, performedAt: Date? = nil) {
         let startedAt = performedAt ?? Date()
         _model = State(initialValue: WorkoutLogModel(source: source, startedAt: startedAt))
@@ -35,6 +39,7 @@ struct WorkoutLogView: View {
         isHistorical = performedAt != nil
         onMinimize = nil
         onEnd = nil
+        isEditingExisting = false
     }
 
     /// Used for a live session whose `WorkoutLogModel` is owned by an `ActiveWorkoutSession` rather than
@@ -46,6 +51,18 @@ struct WorkoutLogView: View {
         isHistorical = false
         self.onMinimize = onMinimize
         self.onEnd = onEnd
+        isEditingExisting = false
+    }
+
+    /// Edits an already-saved historical `log` in place, pre-loaded with its existing exercises, sets,
+    /// and dates. Reuses the historical UI (date pickers, "Save" label) since an edited entry isn't live.
+    init(editing log: WorkoutLog) {
+        _model = State(initialValue: WorkoutLogModel(editing: log))
+        _finishedAt = State(initialValue: log.finishedAt ?? log.startedAt)
+        isHistorical = true
+        onMinimize = nil
+        onEnd = nil
+        isEditingExisting = true
     }
 
     var body: some View {
@@ -234,7 +251,12 @@ struct WorkoutLogView: View {
     private func save() {
         do {
             let log = try model.save(context: modelContext, finishedAt: isHistorical ? finishedAt : Date())
-            summaryModel = SessionSummaryModel(workoutLog: log)
+            if isEditingExisting {
+                onEnd?()
+                dismiss()
+            } else {
+                summaryModel = SessionSummaryModel(workoutLog: log)
+            }
         } catch {
             // Save failure is logged inside WorkoutLogModel; the logging screen stays open so the developer
             // can retry rather than silently losing the entered data.
