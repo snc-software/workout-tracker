@@ -47,6 +47,14 @@ final class WorkoutLogModel {
     var isSelectingForSuperset = false
     var selectedBlockIDs: [UUID] = []
 
+    /// Non-`nil` only when this model edits an already-saved log rather than starting a new session.
+    /// `entries` then holds detached copies (same `id`s, no `modelContext`) of `existingLog`'s exercises
+    /// and sets, not the live objects — every mutation during the edit (including `WorkoutSetRow`'s direct
+    /// `@Bindable` bindings) touches only those copies, so cancelling is a true no-op regardless of
+    /// SwiftData's autosave. `save(context:finishedAt:)` reconciles the copies back onto `existingLog` by
+    /// `id` instead of inserting a new log.
+    private let existingLog: WorkoutLog?
+
     var canSave: Bool {
         !entries.isEmpty
     }
@@ -85,6 +93,7 @@ final class WorkoutLogModel {
     init(source: Source, startedAt: Date = Date()) {
         self.source = source
         self.startedAt = startedAt
+        existingLog = nil
 
         switch source {
         case let .scheduled(workout):
@@ -100,6 +109,28 @@ final class WorkoutLogModel {
         case .custom:
             name = nil
             entries = []
+        }
+    }
+
+    /// Edits an already-saved `log` in place. `entries` is built from detached copies of `log`'s
+    /// exercises/sets (see `existingLog`) rather than the live objects, so nothing is written to `log`
+    /// until `save(context:finishedAt:)` is called.
+    init(editing log: WorkoutLog) {
+        source = .custom
+        name = log.name
+        startedAt = log.startedAt
+        existingLog = log
+        entries = log.exercises.sorted { $0.order < $1.order }.map { entry in
+            WorkoutLogExercise(
+                id: entry.id,
+                exercise: entry.exercise,
+                order: entry.order,
+                supersetID: entry.supersetID,
+                isSkipped: entry.isSkipped,
+                sets: entry.sets.sorted { $0.order < $1.order }.map { set in
+                    WorkoutSetLog(id: set.id, order: set.order, weightKg: set.weightKg, reps: set.reps)
+                }
+            )
         }
     }
 
@@ -184,21 +215,33 @@ final class WorkoutLogModel {
 
     @discardableResult
     func save(context: ModelContext, finishedAt: Date = Date()) throws -> WorkoutLog {
-        let log = WorkoutLog(startedAt: startedAt, finishedAt: finishedAt, name: name)
+        let log = existingLog ?? WorkoutLog(startedAt: startedAt, finishedAt: finishedAt, name: name)
         guard canSave else { return log }
 
-        context.insert(log)
+        if let existingLog {
+            existingLog.startedAt = startedAt
+            existingLog.finishedAt = finishedAt
+            reconcile(log: existingLog, context: context)
+            do {
+                try recalculatePersonalRecords(log: existingLog, finishedAt: finishedAt, context: context)
+            } catch {
+                Self.logger.error("Failed to recalculate personal records: \(error)")
+                throw error
+            }
+        } else {
+            context.insert(log)
 
-        for entry in entries {
-            if entry.modelContext == nil {
-                context.insert(entry)
+            for entry in entries {
+                if entry.modelContext == nil {
+                    context.insert(entry)
+                }
+                for set in entry.sets where set.modelContext == nil {
+                    context.insert(set)
+                }
             }
-            for set in entry.sets where set.modelContext == nil {
-                context.insert(set)
-            }
+            log.exercises = entries
+            applyPersonalRecords(log: log, finishedAt: finishedAt, context: context)
         }
-        log.exercises = entries
-        applyPersonalRecords(log: log, finishedAt: finishedAt, context: context)
 
         do {
             try context.save()
@@ -208,36 +251,6 @@ final class WorkoutLogModel {
         }
 
         return log
-    }
-
-    /// For each non-skipped entry whose heaviest set beats the exercise's current `PersonalRecord` (or it
-    /// doesn't have one yet), stamps the achieved weight onto the entry and updates/inserts the record,
-    /// dated to this workout's finish time. Runs once, here, so "was this a PR" is a persisted fact rather
-    /// than something re-derived later against `Exercise.personalRecord`, which moves on after this call.
-    private func applyPersonalRecords(log: WorkoutLog, finishedAt: Date, context: ModelContext) {
-        for entry in entries where !entry.isSkipped {
-            let maxWeightKg = entry.sets.map(\.weightKg).max() ?? 0
-            guard maxWeightKg > 0 else { continue }
-
-            let existingWeightKg = entry.exercise.personalRecord?.weightKg
-            guard existingWeightKg.map({ maxWeightKg > $0 }) ?? true else { continue }
-
-            entry.personalRecordWeightKg = maxWeightKg
-            if let existingRecord = entry.exercise.personalRecord {
-                existingRecord.weightKg = maxWeightKg
-                existingRecord.achievedAt = finishedAt
-                existingRecord.achievedInWorkout = log
-            } else {
-                context.insert(
-                    PersonalRecord(
-                        exercise: entry.exercise,
-                        weightKg: maxWeightKg,
-                        achievedAt: finishedAt,
-                        achievedInWorkout: log
-                    )
-                )
-            }
-        }
     }
 
     private func renumberOrder() {
